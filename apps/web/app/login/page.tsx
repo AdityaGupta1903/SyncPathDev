@@ -1,24 +1,35 @@
 "use client"
-
 import React, { useRef, useState } from 'react';
-
+import { Authenticate } from '../api/function';
+import { useRouter } from 'next/navigation'  /// Just as useNavigate in React
 const LoginSignup = () => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
   const UsenameRef = useRef<HTMLInputElement>(null);
   const PasswordRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     if (isLogin) {
       // Handle Login
-      alert('Logging In...');
+      const res = await Authenticate(UsenameRef.current?.value ?? "",PasswordRef.current?.value?? "","signin")
+      if(res.data.statusCode === 200){
+       localStorage.setItem("token",res.data.token);
+       router.push('/synchomepage')
+      }
+
     } else {
       // Handle Signup
-      alert('Signing Up...');
+      const res = await Authenticate(UsenameRef.current?.value ?? "",PasswordRef.current?.value?? "","signup")
+      if(res.data.statusCode === 200){
+        localStorage.setItem("token",res.data.token);
+        router.push('/synchomepage')
+       }
+      console.log(res);
     }
   };
 

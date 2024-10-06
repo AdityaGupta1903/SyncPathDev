@@ -5,7 +5,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -13,6 +14,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+, "pages/api/auth/[...nextauth].ts"  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

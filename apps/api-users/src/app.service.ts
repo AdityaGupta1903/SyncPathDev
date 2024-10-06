@@ -23,7 +23,7 @@ export class AppService {
       if (User) {
         const secret = "S3CRET";
         const token = Jwt.sign({ UserName: UserName, Password: Password }, secret);
-        return { message: "SignIn Successfull", token: token }
+        return { message: "SignIn Successfull", token: token,statusCode:200 }
       }
       else {
         return new NotFoundException('User Not Found')
@@ -56,7 +56,7 @@ export class AppService {
             Password: Password
           }
         })
-        return { message: "SignUp Successfull", token: token }
+        return { message: "SignUp Successfull", token: token,statusCode:200 }
       }
     }
     catch (err) {

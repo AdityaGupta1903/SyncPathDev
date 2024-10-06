@@ -15,7 +15,7 @@ datasource db {
 
 model User{
   UserId       String @id @default(uuid())
-  UserName     String @unique
+  email        String @unique 
   Password     String
   Zaps         Zap[]
 }

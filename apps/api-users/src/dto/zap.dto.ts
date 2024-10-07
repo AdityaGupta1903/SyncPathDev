@@ -4,5 +4,5 @@ export class ZapDTO{
     @IsString()
     ZapName :string
     @IsString()
-    token : string
+    email : string
 }

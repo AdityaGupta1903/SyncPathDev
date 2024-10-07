@@ -11,14 +11,14 @@ import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Post('/api/v1/signin')
-  SignIn(@Body(ValidationPipe) user:CreateUserDTO) {
-    return this.appService.SignIn(user);
-  }
-  @Post('/api/v1/signup')
-  SignUp(@Body(ValidationPipe) user:CreateUserDTO) {
-    return this.appService.SignUp(user);
-  }
+  // @Post('/api/v1/signin')
+  // SignIn(@Body(ValidationPipe) user:CreateUserDTO) {
+  //   return this.appService.SignIn(user);
+  // }
+  // @Post('/api/v1/signup')
+  // SignUp(@Body(ValidationPipe) user:CreateUserDTO) {
+  //   return this.appService.SignUp(user);
+  // }
   @Post('/api/v1/CreateZap')
   CreateZap(@Body(ValidationPipe) ZapDetails:ZapDTO) {
     return this.appService.CreateZap(ZapDetails);

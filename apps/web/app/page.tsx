@@ -1,28 +1,14 @@
-// "use client"
-// import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
-// import prisma from "@shared/db";
-// import { useEffect } from "react";
-// export default function Home() {
-//   const router = useRouter();
-//   const {update,data,status} = useSession();
-//   console.log(status);
-//   if(status === "loading" || status === "authenticated"){
-//     console.log(data);
-//   }
-//   else{
-//     router.push('/api/auth/signin');
-//   }
-
-//   return (
-     
-//     <div></div>
-//   );
-// }
-
+"use client"
 import Head from 'next/head';
-
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 export default function Home() {
+  const router = useRouter();
+  const {data,status} = useSession();
+  if(status =='authenticated'){
+    router.push('/workflows')
+  }
   return (
     <>
       <Head>
@@ -43,9 +29,9 @@ export default function Home() {
                 <li><a href="#about" className="text-gray-600 hover:text-gray-900">About</a></li>
                 <li><a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a></li>
                 <li>
-                  <a href="#" className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">
+                  <Link href={'/api/auth/signin'} className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">
                     Get Started
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

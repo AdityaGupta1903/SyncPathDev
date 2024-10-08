@@ -11,7 +11,7 @@ export const authOptions = {
     CredentialsProvider({
       name: "Email",
       credentials: {
-        username: { label: "email", type: "email", placeholder: "Your email" },
+        username: { label: "email", type: "email", placeholder: "enter email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
@@ -48,7 +48,7 @@ export const authOptions = {
   callbacks:{
     async signIn(details:any) {
       console.log(details);
-      return false
+      return true;
     },
     async session(session:any) {
       // you can entry here for any db related things

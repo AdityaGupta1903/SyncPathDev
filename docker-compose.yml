@@ -5,7 +5,7 @@ services:
     image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
-
+    restart: always
   kafka:
     image: wurstmeister/kafka:latest
     ports:

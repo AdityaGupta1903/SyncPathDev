@@ -1,6 +1,6 @@
 "use client"
 import { signOut,signIn } from "next-auth/react"
-
+import Dragable from "../subcomponents/dragable";
 export default function workflows(){
     return <div>
         <div className="flex justify-between w-full">
@@ -12,7 +12,7 @@ export default function workflows(){
             </button>
         </div>
         <div className="flex justify-center w-full mt-[20%]">
-            <div>Create a Zap</div>
+           <Dragable/>
         </div>
     </div>
        

@@ -1,5 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
+
 export default function SyncHomePage(){
 const router = useRouter();    
 const secret = localStorage.getItem("token");

@@ -48,13 +48,23 @@ export const authOptions = {
   callbacks:{
     async signIn(details:any) {
       console.log(details);
+      const user = await prisma.user.findUnique({
+        where:{
+          email:details.user.email
+        }
+      })
+      if(!user){
+        const user = await prisma.user.create({
+          data:{
+            email : details.user.email,
+            Password: "OAuthPassword"
+          }
+        })
+        if(user) return true;
+      }
       return true;
     },
-    async session(session:any) {
-      // you can entry here for any db related things
-      console.log(session);
-      return session;
-    },
+    
   }
   
   

@@ -19,21 +19,24 @@ const initialStateTodos = [
     completed: true,
   },
 ];
+interface todos{
+  id : number,
+  title:string,
+  completed:boolean
+}
 
 const App = () => {
-  const [todos, setTodos] = useState(initialStateTodos);
-  useEffect(()=> {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
+  const [todos, setTodos] = useState<todos[] >(initialStateTodos);
   const handleDragEnd = (result: any) => {
-    // console.log(result)
-    // if(!result.destination) return; 
-    // const startIndex = result.source.index
-    // const endIndex = result.destination.index
-    // const copyTodos = [...todos]
-    // const [reorderTodo] = copyTodos.splice(startIndex,1)
-    // copyTodos.splice(endIndex,0,reorderTodo)
-    // setTodos(copyTodos)
+    console.log(result)
+    if(!result.destination) return; 
+    const startIndex = result.source.index
+    const endIndex = result.destination.index
+    const copyTodos : todos[] = [...todos];
+    todos[endIndex] ? copyTodos[startIndex] = todos[endIndex]:null
+    todos[startIndex] ? copyTodos[endIndex] = todos[startIndex]:null
+    setTodos(copyTodos);
+    
   }
   return (
     <div>

@@ -1,12 +1,12 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@shared/db";
 
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
-  sercret:process.env.AUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Email",
@@ -33,41 +33,53 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-      authorization:{
+      authorization: {
         params: {
           access_type: 'offline', // for refresh tokens
           prompt: 'consent' // to force user re-consent
         }
       },
     },
-  
-  ),
 
-
+    ),
   ],
-  callbacks:{
-    async signIn(details:any) {
-      console.log(details);
+
+
+  callbacks: {
+    async jwt({account,token,user}) {
+      console.log(token)
+      return token;
+    },
+    async session({session,token,user}){
+      // console.log({session,token,user});
+      return session
+    },
+    async signIn(details: any) {
+      // console.log(details);
       const user = await prisma.user.findUnique({
-        where:{
-          email:details.user.email
+        where: {
+          email: details.user.email
         }
       })
-      if(!user){
+      if (!user) {
         const user = await prisma.user.create({
-          data:{
-            email : details.user.email,
+          data: {
+            email: details.user.email,
             Password: "OAuthPassword"
           }
         })
-        if(user) return true;
+        if (user) return true;
       }
       return true;
     },
-    
+
+
+  },
+  session: {
+    strategy: "jwt"
   }
-  
-  
+
+
 
 }
 

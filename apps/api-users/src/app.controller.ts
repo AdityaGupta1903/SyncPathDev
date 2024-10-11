@@ -30,7 +30,12 @@ export class AppController {
   @Post('/api/v1/CreateAvailableTrigger')
   CreateAvailableTrigger(@Body(ValidationPipe) AvailableTriggerDetails:AvailableTriggerDetails){
     return this.appService.CreateAvailableTriggers(AvailableTriggerDetails);
-  } 
+  }
+  @Get('/api/v1/GetAvailableTriggers')
+  GetAvailabeTriggers(){
+    return this.appService.getAvailableTriggers();
+  }
+  
   @Post('/api/v1/CreateAction')
   CreateAction(@Body(ValidationPipe) ActionDetails:ActionDetails){
     return  this.appService.CreateActions(ActionDetails);

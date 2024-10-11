@@ -1,9 +1,25 @@
 import axios from "axios";
 
-export async function Authenticate(UserName:string,Password:string,AuthType:string){
-  const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`,{
-        UserName : UserName,
-        Password : Password
+export async function Authenticate(UserName: string, Password: string, AuthType: string) {
+  try {
+    const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`, {
+      UserName: UserName,
+      Password: Password
     })
     return res;
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
+
+export async function getAvailabletriggers() {
+     try{
+     const res = await axios.get('http://localhost:3002/api/v1/GetAvailableTriggers');
+     console.log(res);
+     return res;
+     }
+     catch(err){
+
+     }
 }

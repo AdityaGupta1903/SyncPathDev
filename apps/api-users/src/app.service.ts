@@ -101,6 +101,15 @@ export class AppService {
     }
 
   }
+  async getAvailableTriggers(){
+    try{
+      const res = await prisma.availableTrigger.findMany();
+      return res;
+    }
+    catch(err){
+      return new BadRequestException(err);
+    }
+  }
   async CreateTrigger(TriggerDetails: TriggerDetails) {
     try {
       const ZapId = TriggerDetails.ZapId;

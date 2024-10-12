@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@shared/db";
-
+import jwt from "jsonwebtoken"
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -25,8 +25,6 @@ export const authOptions: NextAuthOptions = {
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
           return null
-
-
         }
       }
     }),
@@ -42,20 +40,15 @@ export const authOptions: NextAuthOptions = {
     },
 
     ),
-  ],
-
-
+  ], 
   callbacks: {
-    async jwt({account,token,user}) {
-      console.log(token)
+    async jwt({ account, token, user }) {
       return token;
     },
-    async session({session,token,user}){
-      // console.log({session,token,user});
+    async session({ session, token, user }) {
       return session
     },
     async signIn(details: any) {
-      // console.log(details);
       const user = await prisma.user.findUnique({
         where: {
           email: details.user.email
@@ -68,19 +61,17 @@ export const authOptions: NextAuthOptions = {
             Password: "OAuthPassword"
           }
         })
-        if (user) return true;
-      }
+        if (user){
+            
+          return true;
+        } 
+      }      
       return true;
     },
-
-
   },
   session: {
     strategy: "jwt"
   }
-
-
-
 }
 
 export default NextAuth(authOptions);

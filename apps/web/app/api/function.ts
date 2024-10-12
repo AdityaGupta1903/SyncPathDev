@@ -17,9 +17,22 @@ export async function getAvailabletriggers() {
      try{
      const res = await axios.get('http://localhost:3002/api/v1/GetAvailableTriggers');
      console.log(res);
-     return res;
+     return res.data;
      }
      catch(err){
-
+      return err;
      }
+}
+
+export async function CreatenewZap(email:string,ZapName:string){
+  try{
+    const res = await axios.post("http://localhost:3002/api/v1/CreateZap", {
+      email: email,
+      ZapName: ZapName,
+    });
+    return res.data;
+  }
+  catch(err){
+   return err;
+  }
 }

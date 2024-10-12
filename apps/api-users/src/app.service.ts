@@ -65,22 +65,23 @@ export class AppService {
   // }
   async CreateZap(ZapDetails: ZapDTO) {
     try {
-        const email = ZapDetails.email 
-        const UserId = prisma.user.findUnique({
-          where: {
-            email : email
-          }
-        })
-        const ZapName = ZapDetails.ZapName;
-        const res = await prisma.zap.create({
-          data: {
-            ZapName: ZapName,
-            UserId: (await UserId).UserId
-          }
-        })
+      const email = ZapDetails.email
+      const UserId = prisma.user.findUnique({
+        where: {
+          email: email
+        }
+      })
+      const ZapName = ZapDetails.ZapName;
 
-        return `${(await UserId).UserId}/${res.ZapId}`;
-      
+      const res = await prisma.zap.create({
+        data: {
+          ZapName: ZapName,
+          UserId: (await UserId).UserId
+        }
+      })
+
+      return `${(await UserId).UserId}/${res.ZapId}`;
+
     }
     catch (err) {
       return new BadRequestException(err);
@@ -101,12 +102,12 @@ export class AppService {
     }
 
   }
-  async getAvailableTriggers(){
-    try{
+  async getAvailableTriggers() {
+    try {
       const res = await prisma.availableTrigger.findMany();
       return res;
     }
-    catch(err){
+    catch (err) {
       return new BadRequestException(err);
     }
   }

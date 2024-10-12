@@ -13,63 +13,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  UserId       String @id @default(uuid())
-  email        String @unique 
-  Password     String
-  Zaps         Zap[]
+model User {
+  UserId   String @id @default(uuid())
+  email    String @unique
+  Password String
+  Zaps     Zap[]
 }
 
-model Zap{
-  ZapId         String @id @default(uuid())
-  ZapName       String 
-  UserId        String @unique
-  User          User @relation(fields: [UserId],references: [UserId])
-  ZapRun        ZapRun[]   
-  Actions       Action[]
-  Trigger       Trigger?
+model Zap {
+  ZapId   String   @id @default(uuid())
+  ZapName String
+  UserId  String
+  User    User     @relation(fields: [UserId], references: [UserId])
+  ZapRun  ZapRun[]
+  Actions Action[]
+  Trigger Trigger?
 }
 
-model Trigger{
-   TriggerId          String @id @default(uuid())
-   ZapId              String @unique
-   AvailabletriggerId String 
-   Zap                Zap  @relation(fields: [ZapId],references: [ZapId]) 
-   AvailableTrigger   AvailableTrigger @relation(fields: [AvailabletriggerId],references: [AvailabletriggerId])
+model Trigger {
+  TriggerId          String           @id @default(uuid())
+  ZapId              String           @unique
+  AvailabletriggerId String
+  Zap                Zap              @relation(fields: [ZapId], references: [ZapId])
+  AvailableTrigger   AvailableTrigger @relation(fields: [AvailabletriggerId], references: [AvailabletriggerId])
 }
 
-model Action{
-  ActionId   String @id @default(uuid())
-  ZapId      String @unique
-  Zap        Zap    @relation(fields: [ZapId],references: [ZapId])
-  SortingOrder Int @default(0)
-  AvailableActionId String @unique
-  AvailabeAction  AvailabeAction @relation(fields: [AvailableActionId],references: [AvailableActionId])
+model Action {
+  ActionId          String         @id @default(uuid())
+  ZapId             String         @unique
+  Zap               Zap            @relation(fields: [ZapId], references: [ZapId])
+  SortingOrder      Int            @default(0)
+  AvailableActionId String         @unique
+  AvailabeAction    AvailabeAction @relation(fields: [AvailableActionId], references: [AvailableActionId])
 }
 
-model ZapRun{
-  ZapRunId      String @id @default(uuid())
-  ZapId         String
-  MetaData      String
-  Zap           Zap @relation(fields: [ZapId],references: [ZapId])
-  ZapRunOutBox  ZapRunOutBox?
+model ZapRun {
+  ZapRunId     String        @id @default(uuid())
+  ZapId        String
+  MetaData     String
+  Zap          Zap           @relation(fields: [ZapId], references: [ZapId])
+  ZapRunOutBox ZapRunOutBox?
 }
 
-model ZapRunOutBox{
-  ZapRunOutBoxId    String @id @default(uuid())
-  ZapRunId          String @unique
-  MetaData          String
-  Zap               ZapRun @relation(fields: [ZapRunId],references: [ZapRunId])
+model ZapRunOutBox {
+  ZapRunOutBoxId String @id @default(uuid())
+  ZapRunId       String @unique
+  MetaData       String
+  Zap            ZapRun @relation(fields: [ZapRunId], references: [ZapRunId])
 }
 
-model AvailableTrigger{
-  AvailabletriggerId  String @id @default(uuid())
-  TriggerName         String
-  Trigger             Trigger[]
+model AvailableTrigger {
+  AvailabletriggerId String    @id @default(uuid())
+  TriggerName        String
+  Trigger            Trigger[]
 }
 
-model AvailabeAction{
-  AvailableActionId   String @id @default(uuid())
+model AvailabeAction {
+  AvailableActionId   String   @id @default(uuid())
   AvailableActionName String
-  Action Action[]
+  Action              Action[]
 }

@@ -1,26 +1,16 @@
 "use client";
 import { signOut, signIn, useSession } from "next-auth/react";
 import Dragable from "../subcomponents/dragable";
-import axios from "axios";
-import { Button, Drawer, TextField } from "@mui/material";
-import { useState,useRef } from "react";
-import Menu from "@mui/material/Menu";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useState } from "react";
 import "./../style.css";
 import DrawerComp from "../subcomponents/drawer";
+
 
 export default function workflows() {
   const [isdrawerOpen, setIsdrawerOpen] = useState<boolean>(false);
   const [istriggerMenuOpen, setistriggerMenuOpen] = useState<boolean>(false);
   const session = useSession();
-  console.log(session.data?.user?.email);
-  const CreatenewZap = async () => {
-    const res = await axios.post("http://localhost:3002/api/v1/CreateZap", {
-      email: session.data?.user?.email?.toString(),
-      ZapName: "TestZap",
-    });
-    console.log(res);
-  };
+  // CreatenewZap(session.data?.user?.email?.toString() ?? "" ,"TestZap")
   return (
     <div>
       <div className="flex justify-between w-full">
@@ -34,7 +24,7 @@ export default function workflows() {
           Signout
         </button>
       </div>
-      <div className="flex justify-center  mt-20">
+      <div className="flex justify-center mt-20">
         <button
           className="hover:cursor-pointer text-white bg-green-300 p-2 rounded-lg"
           onClick={() => {
@@ -43,6 +33,7 @@ export default function workflows() {
         >
           Create a new WorkFlow
         </button>
+
         <DrawerComp isdrawerOpen = {isdrawerOpen} setIsdrawerOpen={setIsdrawerOpen} istriggerMenuOpen = {istriggerMenuOpen} setistriggerMenuOpen={setistriggerMenuOpen}/>
       </div>
       <div className="flex justify-center w-full mt-[20%]">

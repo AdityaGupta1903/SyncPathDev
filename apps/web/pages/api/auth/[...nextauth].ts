@@ -40,7 +40,15 @@ export const authOptions: NextAuthOptions = {
     },
 
     ),
-  ], 
+  ],
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        sameSite: 'none',
+      }
+    }
+  },
   callbacks: {
     async jwt({ account, token, user }) {
       return token;
@@ -61,11 +69,11 @@ export const authOptions: NextAuthOptions = {
             Password: "OAuthPassword"
           }
         })
-        if (user){
-            
+        if (user) {
+
           return true;
-        } 
-      }      
+        }
+      }
       return true;
     },
   },

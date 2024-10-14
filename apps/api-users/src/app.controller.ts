@@ -31,10 +31,7 @@ export class AppController {
   CreateAvailableTrigger(@Body(ValidationPipe) AvailableTriggerDetails:AvailableTriggerDetails){
     return this.appService.CreateAvailableTriggers(AvailableTriggerDetails);
   }
-  @Get('/api/v1/GetAvailableTriggers')
-  GetAvailabeTriggers(){
-    return this.appService.getAvailableTriggers();
-  }
+ 
   
   @Post('/api/v1/CreateAction')
   CreateAction(@Body(ValidationPipe) ActionDetails:ActionDetails){
@@ -43,5 +40,16 @@ export class AppController {
   @Post('/api/v1/CreateAvailableAction')
   CreateAvailable(@Body(ValidationPipe) CreateAvailableAction : CreateAvailableAction){
     return this.appService.CreateAvailableAction(CreateAvailableAction)
+  }
+}
+
+
+/// This Controller is only for Public Apis
+@Controller()
+export class AppControllerGetFunctions{
+  constructor (private readonly appService:AppService){}
+  @Get('/api/v1/GetAvailableTriggers')
+  GetAvailabeTriggers(){
+    return this.appService.getAvailableTriggers();
   }
 }

@@ -80,7 +80,7 @@ export class AppService {
         }
       })
 
-      return `${(await UserId).UserId}/${res.ZapId}`;
+      return res;
 
     }
     catch (err) {

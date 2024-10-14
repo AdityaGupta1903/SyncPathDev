@@ -140,8 +140,8 @@ const DrawerComp: React.FC<{
                           <MenuItem
                             value={item.TriggerName ?? ""}
                             id={item.AvailabletriggerId}
-                            onClick={()=>{
-                              setTriggerId(item.AvailabletriggerId)
+                            onClick={() => {
+                              setTriggerId(item.AvailabletriggerId);
                             }}
                           >
                             {item.TriggerName ?? ""}
@@ -156,14 +156,17 @@ const DrawerComp: React.FC<{
               className="!mt-[30px] !w-1/2"
               variant="outlined"
               onClick={async () => {
-                const res = await CreatenewZap(
-                  session.data?.user?.email?.toString() ?? "",
-                  workflowName
-                );
-                if (res) {
-                  console.log(res);
-                  /// create a new Trigger
-                }
+                  console.log("sdasd")
+                  const res = await CreatenewZap(
+                    session.data?.user?.email?.toString() ?? "",
+                    workflowName
+                  );
+                  if (res) {
+                    const UserId = res.UserId;
+                    const ZapId = res.ZapId;
+
+                  }
+               
               }}
             >
               Submit

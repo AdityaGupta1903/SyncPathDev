@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import  jwt  from "jsonwebtoken";
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
   try {
     const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`, {
@@ -15,7 +15,9 @@ export async function Authenticate(UserName: string, Password: string, AuthType:
 
 export async function getAvailabletriggers() {
      try{
-     const res = await axios.get('http://localhost:3002/api/v1/GetAvailableTriggers');
+     const res = await axios.get('http://localhost:3002/api/v1/GetAvailableTriggers',{
+      withCredentials:true
+     });
      console.log(res);
      return res.data;
      }
@@ -29,10 +31,11 @@ export async function CreatenewZap(email:string,ZapName:string){
     const res = await axios.post("http://localhost:3002/api/v1/CreateZap", {
       email: email,
       ZapName: ZapName,
+      
     });
     return res.data;
   }
   catch(err){
-   return err;
+   console.log(err);
   }
 }

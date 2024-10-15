@@ -37,5 +37,19 @@ export async function CreatenewZap(email:string,ZapName:string){
   }
   catch(err){
    console.log(err);
+   return err;
+  }
+}
+export async function CreatenewTrigger(ZapId : string,AvailableTriggerId:string){
+  try{
+   const res = await axios.post("http://localhost:3002/api/v1/CreateTrigger",{
+    ZapId : ZapId,
+    AvailableTriggerId : AvailableTriggerId
+   });
+   return res.data;
+  }
+  catch(err){
+    console.log(err);
+    return err;
   }
 }

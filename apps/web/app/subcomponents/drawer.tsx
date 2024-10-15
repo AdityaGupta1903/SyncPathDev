@@ -1,16 +1,9 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Button, Drawer, TextField } from "@mui/material";
-import { useRef } from "react";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MenuItem from "@mui/material/MenuItem";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Button, Drawer, TextField, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { CreatenewZap, getAvailabletriggers } from "../api/function";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 import { useQuery } from "@tanstack/react-query";
 
 const DrawerComp: React.FC<{
@@ -27,25 +20,14 @@ const DrawerComp: React.FC<{
   const session = useSession();
   const [workflowName, setWorkflowName] = useState<string>("");
   const [triggerId, setTriggerId] = useState<string>("");
-  const buttonRef = useRef(null);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const {
     data: AvailableTriggerData,
     isLoading,
-    error,
   } = useQuery({
     queryKey: ["getAvailabletrigger"],
     queryFn: getAvailabletriggers,
   });
-  console.log(AvailableTriggerData);
 
   return (
     <>
@@ -54,119 +36,92 @@ const DrawerComp: React.FC<{
           open={isdrawerOpen}
           onClose={() => setIsdrawerOpen(false)}
           anchor="right"
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: "30%",
+              padding: "20px",
+              boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "#f9f9f9",
+            },
+          }}
         >
-          <div className="flex justify-center flex-col ml-[20%]">
-            <div className="mb-4 text-white bg-green-300 p-2 w-fit rounded-md mt-[10px] font-bold">
-              Add Your Workflow details here
+          <div className="flex flex-col items-center">
+            <div className="mb-4 text-gray-800 bg-green-400 py-3 px-5 rounded-md font-bold shadow-md">
+              Add Your Workflow Details
             </div>
+
             <TextField
-              id="outlined-basic"
+              id="workflow-name"
               label="Enter Workflow Name"
-              variant="standard"
-              className="w-1/2 !mb-[30px]"
-              onChange={(e) => {
-                setWorkflowName(e.target.value);
+              variant="outlined"
+              className="w-full mb-5"
+              value={workflowName}
+              onChange={(e) => setWorkflowName(e.target.value)}
+              sx={{
+                "& label": { color: "#777" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#ccc",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#888",
+                  },
+                },
               }}
             />
-            {/* <Button
-              id="demo-customized-button"
-              variant="contained"
-              className="!w-1/2 !bg-[#D91656]  "
-              disableElevation
-              ref={buttonRef}
-              onClick={() => setistriggerMenuOpen((prev) => !prev)}
-              endIcon={<KeyboardArrowDownIcon />}
-            >
-              Select Trigger
-            </Button> */}
-            {/* <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={"Select Trigger"}
-              label="Age"
-              className="!w-1/2"
-            >
-              { !isLoading && AvailableTriggerData.map((item: { AvailabletriggerId: React.SetStateAction<string>; TriggerName: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; })=>{
-                 return <MenuItem
-                 className="!w-1/2"
-                 onClick={() => {
-                  setTriggerId(item.AvailabletriggerId);
-                 }}
-               >
-                 {item.TriggerName}
-               </MenuItem>
-              })}
-            </Select> */}
-            <Box sx={{ minWidth: 20 }}>
+
+            <Box className="w-full mb-5">
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                  Select Trigger
-                </InputLabel>
+                <InputLabel id="trigger-select-label">Select Trigger</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId="trigger-select-label"
+                  id="trigger-select"
+                  value={triggerId}
                   label="Select Trigger"
-                  className="!w-1/2"
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        maxWidth: "10%",
-                        width: "10%",
-                      },
+                  className="w-full"
+                  onChange={(e) => setTriggerId(e.target.value)}
+                  sx={{
+                    "& .MuiSelect-select": {
+                      padding: "10px",
                     },
                   }}
                 >
                   {!isLoading &&
-                    AvailableTriggerData.map(
-                      (item: {
-                        AvailabletriggerId: React.SetStateAction<string>;
-                        TriggerName:
-                          | string
-                          | number
-                          | bigint
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | Iterable<React.ReactNode>
-                          | React.ReactPortal
-                          | Promise<React.AwaitedReactNode>
-                          | null
-                          | undefined;
-                      }) => {
-                        return (
-                          //@ts-ignore
-                          <MenuItem
-                            value={item.TriggerName ?? ""}
-                            id={item.AvailabletriggerId}
-                            onClick={() => {
-                              setTriggerId(item.AvailabletriggerId);
-                            }}
-                          >
-                            {item.TriggerName ?? ""}
-                          </MenuItem>
-                        );
-                      }
+                    AvailableTriggerData?.map(
+                      (item: { AvailabletriggerId: string; TriggerName: string }) => (
+                        <MenuItem
+                          key={item.AvailabletriggerId}
+                          value={item.AvailabletriggerId}
+                        >
+                          {item.TriggerName}
+                        </MenuItem>
+                      )
                     )}
                 </Select>
               </FormControl>
             </Box>
-            <Button
-              className="!mt-[30px] !w-1/2"
-              variant="outlined"
-              onClick={async () => {
-                  console.log("sdasd")
-                  const res = await CreatenewZap(
-                    session.data?.user?.email?.toString() ?? "",
-                    workflowName
-                  );
-                  if (res) {
-                    const UserId = res.UserId;
-                    const ZapId = res.ZapId;
 
-                  }
-               
+            <Button
+              variant="contained"
+              className="w-full mt-5"
+              sx={{
+                backgroundColor: "#4CAF50",
+                padding: "10px 20px",
+                fontSize: "16px",
+                "&:hover": {
+                  backgroundColor: "#45a049",
+                },
+              }}
+              onClick={async () => {
+                const res = await CreatenewZap(
+                  session.data?.user?.email?.toString() ?? "",
+                  workflowName
+                );
+                if (res && res.status == 200) {
+                  const UserId = res.UserId;
+                  const ZapId = res.ZapId;
+                  // Handle the response here
+                }
               }}
             >
               Submit
@@ -177,4 +132,5 @@ const DrawerComp: React.FC<{
     </>
   );
 };
+
 export default DrawerComp;

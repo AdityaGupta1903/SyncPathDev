@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { ZapDTO } from './dto/zap.dto';
@@ -6,6 +6,8 @@ import { TriggerDetails } from './dto/TriggerDetails.dto';
 import { AvailableTriggerDetails } from './dto/AvailableTriggerDetails';
 import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
+import {Request as request} from "express"
+import {decode} from 'next-auth/jwt'
 
 @Controller()
 export class AppController {
@@ -20,7 +22,7 @@ export class AppController {
   //   return this.appService.SignUp(user);
   // }
   @Post('/api/v1/CreateZap')
-  CreateZap(@Body(ValidationPipe) ZapDetails:ZapDTO) {
+  CreateZap(@Body(ValidationPipe) ZapDetails:ZapDTO,@Req() request:request) {
     return this.appService.CreateZap(ZapDetails);
   }
   @Post('/api/v1/CreateTrigger')  /// Complete These EndPoints
@@ -49,7 +51,17 @@ export class AppController {
 export class AppControllerGetFunctions{
   constructor (private readonly appService:AppService){}
   @Get('/api/v1/GetAvailableTriggers')
-  GetAvailabeTriggers(){
+  GetAvailabeTriggers(@Req() request:request){
+    console.log(request.cookies["next-auth.session-token"])
+     decode({
+      token:request.cookies["next-auth.session-token"],
+      secret:"S3CRET"
+    }).then((res)=>{
+      console.log(res);
+    }).catch((err)=>{
+      console.log(err);
+    })
+   
     return this.appService.getAvailableTriggers();
   }
 }

@@ -41,14 +41,6 @@ export const authOptions: NextAuthOptions = {
 
     ),
   ],
-  cookies: {
-    sessionToken: {
-      name: `next-auth.session-token`,
-      options: {
-        sameSite: 'none',
-      }
-    }
-  },
   callbacks: {
     async jwt({ account, token, user }) {
       return token;
@@ -70,16 +62,26 @@ export const authOptions: NextAuthOptions = {
           }
         })
         if (user) {
-
           return true;
         }
       }
+      console.log("Reached")
       return true;
     },
   },
   session: {
     strategy: "jwt"
-  }
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        sameSite: 'none',
+        path: '/',  
+        secure: true,
+      }
+    }
+  },
 }
 
 export default NextAuth(authOptions);

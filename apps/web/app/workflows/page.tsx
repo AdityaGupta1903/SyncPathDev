@@ -4,10 +4,12 @@ import Dragable from "../subcomponents/dragable";
 import { useState } from "react";
 import "./../style.css";
 import DrawerComp from "../subcomponents/drawer";
+import { ColorRing } from "react-loader-spinner";
 
 export default function Workflows() {
   const [isdrawerOpen, setIsdrawerOpen] = useState<boolean>(false);
   const [istriggerMenuOpen, setistriggerMenuOpen] = useState<boolean>(false);
+  const [Loading, setLoading] = useState<boolean>(false);
   const session = useSession();
   // CreatenewZap(session.data?.user?.email?.toString() ?? "" ,"TestZap")
 
@@ -34,20 +36,21 @@ export default function Workflows() {
         >
           Create a New Workflow
         </button>
-
         <DrawerComp
           isdrawerOpen={isdrawerOpen}
           setIsdrawerOpen={setIsdrawerOpen}
           istriggerMenuOpen={istriggerMenuOpen}
           setistriggerMenuOpen={setistriggerMenuOpen}
+          Loading={Loading}
+          setLoading={setLoading}
         />
       </div>
 
-      <div className="flex justify-center w-full mt-20">
+      {/* <div className="flex justify-center w-full mt-20">
         <div className="w-4/5 max-w-4xl">
           <Dragable />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

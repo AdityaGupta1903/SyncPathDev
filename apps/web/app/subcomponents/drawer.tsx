@@ -1,30 +1,44 @@
 "use client";
-
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import { Button, Drawer, TextField, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  Drawer,
+  TextField,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { useSession } from "next-auth/react";
-import { CreatenewZap, getAvailabletriggers } from "../api/function";
+import {
+  CreatenewZap,
+  getAvailabletriggers,
+  CreatenewTrigger,
+} from "../api/function";
 import { useQuery } from "@tanstack/react-query";
+import { ColorRing } from "react-loader-spinner";
 
 const DrawerComp: React.FC<{
   isdrawerOpen: boolean;
   setIsdrawerOpen: Dispatch<SetStateAction<boolean>>;
   istriggerMenuOpen: boolean;
   setistriggerMenuOpen: Dispatch<SetStateAction<boolean>>;
+  Loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }> = ({
   isdrawerOpen,
   setIsdrawerOpen,
   istriggerMenuOpen,
   setistriggerMenuOpen,
+  Loading,
+  setLoading,
 }) => {
   const session = useSession();
   const [workflowName, setWorkflowName] = useState<string>("");
   const [triggerId, setTriggerId] = useState<string>("");
 
-  const {
-    data: AvailableTriggerData,
-    isLoading,
-  } = useQuery({
+  const { data: AvailableTriggerData, isLoading } = useQuery({
     queryKey: ["getAvailabletrigger"],
     queryFn: getAvailabletriggers,
   });
@@ -72,7 +86,9 @@ const DrawerComp: React.FC<{
 
             <Box className="w-full mb-5">
               <FormControl fullWidth>
-                <InputLabel id="trigger-select-label">Select Trigger</InputLabel>
+                <InputLabel id="trigger-select-label">
+                  Select Trigger
+                </InputLabel>
                 <Select
                   labelId="trigger-select-label"
                   id="trigger-select"
@@ -88,7 +104,10 @@ const DrawerComp: React.FC<{
                 >
                   {!isLoading &&
                     AvailableTriggerData?.map(
-                      (item: { AvailabletriggerId: string; TriggerName: string }) => (
+                      (item: {
+                        AvailabletriggerId: string;
+                        TriggerName: string;
+                      }) => (
                         <MenuItem
                           key={item.AvailabletriggerId}
                           value={item.AvailabletriggerId}
@@ -112,20 +131,37 @@ const DrawerComp: React.FC<{
                   backgroundColor: "#45a049",
                 },
               }}
+              disabled={workflowName == "" || triggerId == "" || Loading}
               onClick={async () => {
-                const res = await CreatenewZap(
+                const Zap = await CreatenewZap(
                   session.data?.user?.email?.toString() ?? "",
                   workflowName
                 );
-                if (res && res.status == 200) {
-                  const UserId = res.UserId;
-                  const ZapId = res.ZapId;
-                  // Handle the response here
+                if (Zap) {
+                  // Handle the response here and Create trigger
+                  const ZapId: string = Zap.ZapId;
+                  const trigger = await CreatenewTrigger(ZapId, triggerId);
+                  if (trigger) {
+                    setLoading(true);
+                    setTimeout(() => {
+                      setIsdrawerOpen(false);
+                      setLoading(false);
+                    }, 3000);
+                  }
                 }
               }}
             >
               Submit
             </Button>
+           { Loading && <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="color-ring-loading"
+              wrapperStyle={{}}
+              wrapperClass="color-ring-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            ></ColorRing>}
           </div>
         </Drawer>
       )}

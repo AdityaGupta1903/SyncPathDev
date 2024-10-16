@@ -37,7 +37,7 @@ export async function CreatenewZap(email:string,ZapName:string){
   }
   catch(err){
    console.log(err);
-   return err;
+   
   }
 }
 export async function CreatenewTrigger(ZapId : string,AvailableTriggerId:string){
@@ -50,6 +50,10 @@ export async function CreatenewTrigger(ZapId : string,AvailableTriggerId:string)
   }
   catch(err){
     console.log(err);
-    return err;
+    
   }
+}
+
+export async function getZaps(){
+  
 }

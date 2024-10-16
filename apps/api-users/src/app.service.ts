@@ -117,12 +117,7 @@ export class AppService {
       const AvailableTriggerId = TriggerDetails.AvailableTriggerId;
       console.log(ZapId + " " + AvailableTriggerId)
       ///find the Available TriggerName
-      const TriggerName = await prisma.availableTrigger.findUnique({
-        where: {
-          AvailabletriggerId: AvailableTriggerId
-        }
-      })
-
+    
       const res = await prisma.trigger.create({
         data: {
           ZapId: ZapId,
@@ -163,6 +158,18 @@ export class AppService {
       return res.ActionId
     }
     catch (err) {
+      return new BadRequestException(err);
+    }
+  }
+  async getUserZaps(userId : string){
+    try{
+     const res = await prisma.zap.findMany({
+      where:{
+        UserId : ""
+      }
+     })
+    }
+    catch(err){
       return new BadRequestException(err);
     }
   }

@@ -46,7 +46,7 @@ export class AppController {
 }
 
 
-/// This Controller is only for Public Apis
+/// This Controller is only for Public Apis no need to verify cookies here
 @Controller()
 export class AppControllerGetFunctions{
   constructor (private readonly appService:AppService){}
@@ -64,4 +64,9 @@ export class AppControllerGetFunctions{
    
     return this.appService.getAvailableTriggers();
   }
+  @Get('/api/v1/GetUserZap')
+  GetUserZap(@Req() request:request,userId:string){
+    
+  }
 }
+

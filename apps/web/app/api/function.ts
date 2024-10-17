@@ -59,7 +59,7 @@ export async function getZaps(email: string) {
         email: email
       }
     });
-    return res;
+    return res.data;
   }
   catch (err) {
     console.log(err);

@@ -161,13 +161,21 @@ export class AppService {
       return new BadRequestException(err);
     }
   }
-  async getUserZaps(userId : string){
+  async getUserZaps(email : string){
     try{
-     const res = await prisma.zap.findMany({
+      console.log(email);
+     const user = await prisma.user.findFirst({
       where:{
-        UserId : ""
+        email : email
       }
      })
+    //  console.log(user);
+     const res = await prisma.zap.findMany({
+      where:{
+        UserId : user.UserId
+      }
+     })
+     return res;
     }
     catch(err){
       return new BadRequestException(err);

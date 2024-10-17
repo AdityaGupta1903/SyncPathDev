@@ -1,13 +1,20 @@
-"use client"
+"use client";
 import { useQuery } from "@tanstack/react-query";
-const ZapList = ()=>{
-    const { data: AvailableTriggerData, isLoading } = useQuery({
-        queryKey: ["getAvailabletrigger"],
-        queryFn: getAvailabletriggers,
-      });
-    return <div>
-        Zap List
-    </div>
-}
+import { useSession } from "next-auth/react";
+import { getZaps } from "../api/function";
+
+const ZapList: React.FC<{ email: string }> = ({ email }) => {
+  const {
+    data: UserZaps,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["getUserZaps"],
+    queryFn: () => getZaps(email),
+  });
+  console.log(UserZaps);
+
+  return <div>Zap List</div>;
+};
 
 export default ZapList;

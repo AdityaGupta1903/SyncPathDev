@@ -4,6 +4,7 @@ import Dragable from "../subcomponents/dragable";
 import { useState } from "react";
 import "./../style.css";
 import DrawerComp from "../subcomponents/drawer";
+import ZapList from "../subcomponents/zapList";
 import { ColorRing } from "react-loader-spinner";
 
 export default function Workflows() {
@@ -11,6 +12,7 @@ export default function Workflows() {
   const [istriggerMenuOpen, setistriggerMenuOpen] = useState<boolean>(false);
   const [Loading, setLoading] = useState<boolean>(false);
   const session = useSession();
+
   // CreatenewZap(session.data?.user?.email?.toString() ?? "" ,"TestZap")
 
   return (
@@ -45,6 +47,7 @@ export default function Workflows() {
           setLoading={setLoading}
         />
       </div>
+     {session.status == "authenticated" && <ZapList email = {session.data.user?.email ?? ""} ></ZapList>} 
 
       {/* <div className="flex justify-center w-full mt-20">
         <div className="w-4/5 max-w-4xl">

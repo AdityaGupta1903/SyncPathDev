@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { ZapDTO } from './dto/zap.dto';
@@ -6,8 +6,8 @@ import { TriggerDetails } from './dto/TriggerDetails.dto';
 import { AvailableTriggerDetails } from './dto/AvailableTriggerDetails';
 import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
-import {Request as request} from "express"
-import {decode} from 'next-auth/jwt'
+import { Request as request } from "express"
+import { decode } from 'next-auth/jwt'
 
 @Controller()
 export class AppController {
@@ -22,25 +22,25 @@ export class AppController {
   //   return this.appService.SignUp(user);
   // }
   @Post('/api/v1/CreateZap')
-  CreateZap(@Body(ValidationPipe) ZapDetails:ZapDTO,@Req() request:request) {
+  CreateZap(@Body(ValidationPipe) ZapDetails: ZapDTO, @Req() request: request) {
     return this.appService.CreateZap(ZapDetails);
   }
   @Post('/api/v1/CreateTrigger')  /// Complete These EndPoints
-  CreateTrigger(@Body(ValidationPipe) TriggerDetails:TriggerDetails) {
+  CreateTrigger(@Body(ValidationPipe) TriggerDetails: TriggerDetails) {
     return this.appService.CreateTrigger(TriggerDetails);
   }
   @Post('/api/v1/CreateAvailableTrigger')
-  CreateAvailableTrigger(@Body(ValidationPipe) AvailableTriggerDetails:AvailableTriggerDetails){
+  CreateAvailableTrigger(@Body(ValidationPipe) AvailableTriggerDetails: AvailableTriggerDetails) {
     return this.appService.CreateAvailableTriggers(AvailableTriggerDetails);
   }
- 
-  
+
+
   @Post('/api/v1/CreateAction')
-  CreateAction(@Body(ValidationPipe) ActionDetails:ActionDetails){
-    return  this.appService.CreateActions(ActionDetails);
+  CreateAction(@Body(ValidationPipe) ActionDetails: ActionDetails) {
+    return this.appService.CreateActions(ActionDetails);
   }
   @Post('/api/v1/CreateAvailableAction')
-  CreateAvailable(@Body(ValidationPipe) CreateAvailableAction : CreateAvailableAction){
+  CreateAvailable(@Body(ValidationPipe) CreateAvailableAction: CreateAvailableAction) {
     return this.appService.CreateAvailableAction(CreateAvailableAction)
   }
 }
@@ -48,25 +48,29 @@ export class AppController {
 
 /// This Controller is only for Public Apis no need to verify cookies here
 @Controller()
-export class AppControllerGetFunctions{
-  constructor (private readonly appService:AppService){}
+export class AppControllerGetFunctions {
+  constructor(private readonly appService: AppService) { }
   @Get('/api/v1/GetAvailableTriggers')
-  GetAvailabeTriggers(@Req() request:request){
-    console.log(request.cookies["next-auth.session-token"])
-     decode({
-      token:request.cookies["next-auth.session-token"],
-      secret:"S3CRET"
-    }).then((res)=>{
-      console.log(res);
-    }).catch((err)=>{
-      console.log(err);
-    })
-   
+  GetAvailabeTriggers(@Req() request: request) {
+    // console.log(request.cookies["next-auth.session-token"])
+    //  decode({
+    //   token:request.cookies["next-auth.session-token"],
+    //   secret:"S3CRET"
+    // }).then((res)=>{
+    //   console.log(res);
+    // }).catch((err)=>{
+    //   console.log(err);
+    // })
+
     return this.appService.getAvailableTriggers();
   }
-  @Get('/api/v1/GetUserZap')
-  GetUserZap(@Req() request:request,userId:string){
-    
+  @Get('/api/v1/GetUserZap')  /// not able to send Body that's why we used post mer
+  GetUserZap(@Req() request: request) {
+    const EmailId = request.query.email
+    if (typeof (EmailId) === "string") {
+      return this.appService.getUserZaps(EmailId);
+    }
+
   }
 }
 

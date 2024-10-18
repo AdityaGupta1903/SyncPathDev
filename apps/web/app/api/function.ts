@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwt from "jsonwebtoken";
+import { Root} from "../modals/UserZaps";
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
   try {
     const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`, {
@@ -51,17 +51,19 @@ export async function CreatenewTrigger(ZapId: string, AvailableTriggerId: string
 
   }
 }
-export async function getZaps(email: string) {
+export async function getZaps(email: string){
   try {
     console.log(email)
-    const res = await axios.get('http://localhost:3002/api/v1/GetUserZap', {
+    const res  = await axios.get<Root>('http://localhost:3002/api/v1/GetUserZap', {
       params: {
         email: email
       }
     });
-    return res.data;
+    console.log(res)
+    return res.data
   }
   catch (err) {
+   
     console.log(err);
   }
 }

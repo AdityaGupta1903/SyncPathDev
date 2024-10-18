@@ -1,3 +1,6 @@
 .MuiPaper-root{
     width: 30%;
 }
+.MuiDrawer-paper{
+    width: 20%;
+}

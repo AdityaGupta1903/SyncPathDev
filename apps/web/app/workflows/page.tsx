@@ -1,20 +1,37 @@
 "use client";
 import { signOut, signIn, useSession } from "next-auth/react";
 import Dragable from "../subcomponents/dragable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./../style.css";
 import DrawerComp from "../subcomponents/drawer";
 import ZapList from "../subcomponents/zapList";
-import { ColorRing } from "react-loader-spinner";
-
+import { getZaps } from "../api/function";
+import { useQuery } from "@tanstack/react-query";
 export default function Workflows() {
   const [isdrawerOpen, setIsdrawerOpen] = useState<boolean>(false);
   const [istriggerMenuOpen, setistriggerMenuOpen] = useState<boolean>(false);
   const [Loading, setLoading] = useState<boolean>(false);
+  const [selectedZap,setSelectedZap] = useState<number>()
+ 
   const session = useSession();
 
   // CreatenewZap(session.data?.user?.email?.toString() ?? "" ,"TestZap")
+   
+  
+  
+    const {
+      data : UserZaps,
+      isLoading,
+      refetch,
+    } = useQuery({
+      queryKey: ["getUserZaps"],
+      queryFn: async() => await getZaps(session.data?.user?.email ?? ""),
+    });
 
+    
+  
+  console.log(UserZaps)
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
       <div className="w-full flex justify-between items-center px-10 py-4 bg-white shadow-lg">
@@ -45,15 +62,14 @@ export default function Workflows() {
           setistriggerMenuOpen={setistriggerMenuOpen}
           Loading={Loading}
           setLoading={setLoading}
+          
         />
       </div>
-     {session.status == "authenticated" && <ZapList email = {session.data.user?.email ?? ""} ></ZapList>} 
-
-      {/* <div className="flex justify-center w-full mt-20">
-        <div className="w-4/5 max-w-4xl">
-          <Dragable />
-        </div>
-      </div> */}
+     {session.status == "authenticated" && UserZaps!==undefined && <ZapList UserZaps = {UserZaps} setSelectedZap = {setSelectedZap} ></ZapList>} 
+     
+     
     </div>
   );
 }
+
+

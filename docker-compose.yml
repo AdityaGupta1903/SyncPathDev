@@ -1,24 +1,46 @@
-version: '2'
+version: "2"
 
 services:
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
       - "2181:2181"
+    networks:
+      - sync-network
     restart: always
   kafka:
     image: wurstmeister/kafka:latest
     ports:
       - "9092:9092"
-    expose:
-      - "9093"
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    
+      KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "ProcessQueue:1:1"
-    restart: always    
+    networks:
+      - sync-network
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  sync-api:
+    build: .
+    container_name: sync-api
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "3002:3002"
+      - "3003:3003"
+    networks:
+      - sync-network
+    restart: always
+    environment:
+      KAFKA_BROKER: kafka:9092
+    depends_on:
+      - kafka
+networks:
+  sync-network:
+    driver: bridge

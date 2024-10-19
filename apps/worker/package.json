@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-     "dev": "tsup && node dist/worker.js"
+    "dev": "tsup && node dist/worker.js",
+    "build": "npm install && tsup"
   },
   "dependencies": {
     "@shared/db": "*",

@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@shared/db";
-import jwt from "jsonwebtoken"
+
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers

@@ -9,7 +9,7 @@
     "build": "npm install && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "npm install && nest build && node dist/src/main.js",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "prod": "node dist/src/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

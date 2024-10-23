@@ -54,7 +54,7 @@ export async function CreatenewTrigger(ZapId: string, AvailableTriggerId: string
 export async function getZaps(email: string){
   try {
     console.log(email)
-    const res  = await axios.get<Root>('http://localhost:3002/api/v1/GetUserZap', {
+    const res  = await axios.get('http://localhost:3002/api/v1/GetUserZap', {
       params: {
         email: email
       }
@@ -63,7 +63,7 @@ export async function getZaps(email: string){
     return res.data
   }
   catch (err) {
-   
+    return [];
     console.log(err);
   }
 }

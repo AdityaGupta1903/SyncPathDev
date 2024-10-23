@@ -1,7 +1,5 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { getZaps } from "../api/function";
 import './../style.css'
 import {
   Box,
@@ -22,7 +20,7 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
- 
+  console.log(UserZaps);
   const DrawerList = (
     <Box
       sx={{ width: "100%" }}
@@ -31,7 +29,7 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
     >
       <List className="w-full">
         {UserZaps &&
-          UserZaps.map((Zap: Daum) => (
+          UserZaps?.map((Zap: Daum) => (
             <ListItem  className="hover:bg-green-200  hover:text-white">
               <ListItemButton>
                 <ListItemText primary={Zap.ZapName} />
@@ -45,8 +43,8 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
   console.log(UserZaps);
 
   return (
-    <div >
-      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
+    <div className="w-full">
+      <Button className="rounded-lg" onClick={toggleDrawer(true)} variant="outlined">Previous Workflows</Button>
       <Drawer sx={{ width: "20%" }}open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

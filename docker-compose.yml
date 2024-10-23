@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   zookeeper:
@@ -19,6 +19,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "ProcessQueue:1:1"
-    restart: always    
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms256M"
+      KAFKA_LOG_DIRS: /kafka/kafka-logs
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

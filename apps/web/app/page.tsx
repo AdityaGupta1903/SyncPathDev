@@ -8,7 +8,8 @@ export default function Home() {
   const {data,status} = useSession();
   console.log(data);
   if(status =='authenticated'){
-    router.push('/workflows')
+    const email = data.user?.email
+    router.push(`/workflows?id=${email}`)
   }
   return (
     <>

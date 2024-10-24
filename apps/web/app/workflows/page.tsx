@@ -8,6 +8,8 @@ import ZapList from "../subcomponents/zapList";
 import { getZaps } from "../api/function";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import {useContext} from "react" 
+import { MyContext } from "..";
 
 export default function Workflows() {  
   let id = window.location.href.split("?")[1]?.split("=")[1];
@@ -27,11 +29,7 @@ export default function Workflows() {
         queryKey: ["getUserZaps"],
         queryFn: async() => await getZaps(id),
       });
-  
-      
-    
-    // console.log(UserZaps)
-    
+   
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
         <div className="w-full flex justify-between items-center px-10 py-4 bg-white shadow-lg">

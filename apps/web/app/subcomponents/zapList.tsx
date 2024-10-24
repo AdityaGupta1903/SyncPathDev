@@ -29,7 +29,7 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
     >
       <List className="w-full">
         {UserZaps &&
-          UserZaps?.map((Zap: Daum) => (
+          UserZaps?.map((Zap: any) => (
             <ListItem  className="hover:bg-green-200  hover:text-white">
               <ListItemButton>
                 <ListItemText primary={Zap.ZapName} />

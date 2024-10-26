@@ -139,7 +139,7 @@ export class AppService {
           AvailableActionName: ActionName
         }
       })
-      return res.AvailableActionId
+        return `Action Created with Action Id ${res.AvailableActionId}`
     }
     catch (err) {
       return new BadRequestException(err);

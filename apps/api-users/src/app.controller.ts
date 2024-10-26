@@ -40,7 +40,7 @@ export class AppController {
     return this.appService.CreateActions(ActionDetails);
   }
   @Post('/api/v1/CreateAvailableAction')
-  CreateAvailable(@Body(ValidationPipe) CreateAvailableAction: CreateAvailableAction) {
+  CreateAvailableAction(@Body(ValidationPipe) CreateAvailableAction: CreateAvailableAction) {
     return this.appService.CreateAvailableAction(CreateAvailableAction)
   }
 }

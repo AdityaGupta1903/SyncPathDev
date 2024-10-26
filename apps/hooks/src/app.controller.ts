@@ -9,7 +9,6 @@ export class AppController {
 
   @Post(":userId/:zapId")
   RunZap(@Body(ValidationPipe) RunZapData:RunZapDto,@Param('userId') userId:string,@Param('zapId') zapId:string) {
-
     return this.appService.RunZap(RunZapData.metadata,userId,zapId);
   }
 }

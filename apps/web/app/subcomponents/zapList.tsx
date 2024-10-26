@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import React, { Dispatch, SetStateAction } from "react";
 import { Daum, Root } from "../modals/UserZaps";
+import {useContext} from "react" 
+import { ZapContext } from "..";
 
 const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateAction<number | undefined>> }> = ({ UserZaps,setSelectedZap }) => {
   const [open, setOpen] = React.useState(false);
@@ -21,6 +23,7 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
     setOpen(newOpen);
   };
   console.log(UserZaps);
+  let zapcontext = useContext(ZapContext);
   const DrawerList = (
     <Box
       sx={{ width: "100%" }}
@@ -29,10 +32,13 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
     >
       <List className="w-full">
         {UserZaps &&
-          UserZaps?.map((Zap: any) => (
+          UserZaps?.map((Zap: any,index:number) => (
+            
             <ListItem  className="hover:bg-green-200  hover:text-white">
               <ListItemButton>
-                <ListItemText primary={Zap.ZapName} />
+                <ListItemText primary={Zap.ZapName} onClick={()=>{
+                  zapcontext.setSelectedZap(index);
+                }}/>
               </ListItemButton>
             </ListItem>
           ))}

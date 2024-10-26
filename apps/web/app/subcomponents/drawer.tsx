@@ -16,7 +16,7 @@ import {
   getAvailabletriggers,
   CreatenewTrigger,
 } from "../api/function";
-import { useQuery } from "@tanstack/react-query";
+import { QueryObserverBaseResult, QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
 import { ColorRing } from "react-loader-spinner";
 
 const DrawerComp: React.FC<{
@@ -26,6 +26,7 @@ const DrawerComp: React.FC<{
   setistriggerMenuOpen: Dispatch<SetStateAction<boolean>>;
   Loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  refetchUserZaps : (options?: RefetchOptions) => Promise<QueryObserverResult<any, Error>>;
 }> = ({
   isdrawerOpen,
   setIsdrawerOpen,
@@ -33,6 +34,7 @@ const DrawerComp: React.FC<{
   setistriggerMenuOpen,
   Loading,
   setLoading,
+  refetchUserZaps
 }) => {
   const session = useSession();
   const [workflowName, setWorkflowName] = useState<string>("");
@@ -143,10 +145,12 @@ const DrawerComp: React.FC<{
                   const trigger = await CreatenewTrigger(ZapId, triggerId);
                   if (trigger) {
                     setLoading(true);
-                    setTimeout(() => {
+                    refetchUserZaps();
+                    setTimeout(() => {   /// To show the Drawer Animation to the Users
                       setIsdrawerOpen(false);
                       setLoading(false);
                     }, 3000);
+
                   }
                 }
               }}

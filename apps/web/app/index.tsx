@@ -10,7 +10,7 @@ interface MyContextType {
   setSelectedZap: Dispatch<SetStateAction<number>>;
 }
 
-export const MyContext = createContext<MyContextType>({selectedZap:-1,setSelectedZap: () => {}});
+export const ZapContext = createContext<MyContextType>({selectedZap:-1,setSelectedZap: () => {}});
 export default function Session({
   children,
 }: Readonly<{
@@ -19,11 +19,11 @@ export default function Session({
   const queryClient = new QueryClient();
   const [selectedZap, setSelectedZap] = useState<number>(-1);
   return (
-    <MyContext.Provider value={{ selectedZap, setSelectedZap }}>
+    <ZapContext.Provider value={{ selectedZap, setSelectedZap }}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>{children}</SessionProvider>
       </QueryClientProvider>
-    </MyContext.Provider>
+    </ZapContext.Provider>
   );
 }
 

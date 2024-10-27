@@ -1,5 +1,5 @@
 import  {PrismaClient}  from '@prisma/client'
-// import prismaC;
+// import prismaClient;
 
  const prisma = new PrismaClient()
 

@@ -6,7 +6,7 @@ export class AppService {
 
   RunZap(metadata: any, userId: string, zapId: string) {
     //// Extract some Metadata and push it to Database of ZapRun and ZapRun Outbox
-    console.log(userId+" "+zapId)
+    console.log(userId+" "+zapId+" "+metadata)
     const AddInZapRunDB = async () => {
       await prisma.$transaction(async tx => {  /// Create Transaction to roll Back if any of the query fails to execute
            const run = tx.zapRun.create({
@@ -24,6 +24,6 @@ export class AppService {
          
       })
     }
-    AddInZapRunDB();
+   // AddInZapRunDB();
   }
 }

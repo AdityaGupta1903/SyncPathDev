@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post(":userId/:zapId")
-  RunZap(@Body(ValidationPipe) RunZapData:RunZapDto,@Param('userId') userId:string,@Param('zapId') zapId:string) {
-    return this.appService.RunZap(RunZapData.metadata,userId,zapId);
+  RunZap(@Body(ValidationPipe) RunZapData,@Param('userId') userId:string,@Param('zapId') zapId:string) {
+    return this.appService.RunZap(RunZapData,userId,zapId);
   }
 }

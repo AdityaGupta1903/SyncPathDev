@@ -1,26 +1,25 @@
 import axios from "axios";
-import { Root} from "../modals/UserZaps";
+import { Root } from "../modals/UserZaps";
+/// Added Comment to Test WebHook
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
   try {
     const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`, {
       UserName: UserName,
-      Password: Password
-    })
+      Password: Password,
+    });
     return res;
-  }
-  catch (err) {
-    console.error(err)
+  } catch (err) {
+    console.error(err);
   }
 }
 export async function getAvailabletriggers() {
   try {
-    const res = await axios.get('http://localhost:3002/api/v1/GetAvailableTriggers', {
-      withCredentials: true
+    const res = await axios.get("http://localhost:3002/api/v1/GetAvailableTriggers", {
+      withCredentials: true,
     });
 
     return res.data;
-  }
-  catch (err) {
+  } catch (err) {
     return err;
   }
 }
@@ -29,40 +28,34 @@ export async function CreatenewZap(email: string, ZapName: string) {
     const res = await axios.post("http://localhost:3002/api/v1/CreateZap", {
       email: email,
       ZapName: ZapName,
-
     });
     return res.data;
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
-
   }
 }
 export async function CreatenewTrigger(ZapId: string, AvailableTriggerId: string) {
   try {
     const res = await axios.post("http://localhost:3002/api/v1/CreateTrigger", {
       ZapId: ZapId,
-      AvailableTriggerId: AvailableTriggerId
+      AvailableTriggerId: AvailableTriggerId,
     });
     return res.data;
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
-
   }
 }
-export async function getZaps(email: string){
+export async function getZaps(email: string) {
   try {
-    console.log(email)
-    const res  = await axios.get('http://localhost:3002/api/v1/GetUserZap', {
+    console.log(email);
+    const res = await axios.get("http://localhost:3002/api/v1/GetUserZap", {
       params: {
-        email: email
-      }
+        email: email,
+      },
     });
-    console.log(res)
-    return res.data
-  }
-  catch (err) {
+    console.log(res);
+    return res.data;
+  } catch (err) {
     return [];
     console.log(err);
   }

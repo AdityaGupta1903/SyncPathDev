@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pm2 start npm --name 'next' -- run 'start:next'",
     "build": "next build",
-    "start": "next start",
+    "start": "next dev --turbo",
     "lint": "next lint"
   },
   "dependencies": {

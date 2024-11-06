@@ -27,6 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         topicName: "projects/syncpath-437211/topics/syncpathqueue",
       },
     });
+    
+   
+    
+    console.log(response);
     res.send({ message: "Watch Set SuccessFully" });
   } catch (err) {
     res.send({ message: "Error Setting" });

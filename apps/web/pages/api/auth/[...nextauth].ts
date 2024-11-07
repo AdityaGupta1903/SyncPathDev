@@ -1,7 +1,8 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
-import prisma from "@shared/db";
+// import prisma from "@shared/db";
+import prisma from "@shared/db"
 
 
 export const authOptions: NextAuthOptions = {
@@ -58,9 +59,11 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.create({
           data: {
             email: details.user.email,
-            Password: "OAuthPassword"
+            Password: "OAuthPassword",
+
           }
         })
+
         if (user) {
           return true;
         }
@@ -77,7 +80,7 @@ export const authOptions: NextAuthOptions = {
       name: `next-auth.session-token`,
       options: {
         sameSite: 'none',
-        path: '/',  
+        path: '/',
         secure: true,
       }
     }

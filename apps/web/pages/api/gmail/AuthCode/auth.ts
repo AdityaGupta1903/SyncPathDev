@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { google } from "googleapis";
-
+import prisma from "@shared/db"
 import { serialize } from "cookie";
 type ResponseData = {
   message: string;
@@ -21,27 +21,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (typeof code === "string") {
       const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
-
+      
       res.setHeader(
         "Set-Cookie",
         serialize("gmail_access_token", tokens.access_token ?? "", {
           sameSite: "none",
           path: "/",
           secure: true,
+          httpOnly:true
         })
-      ).redirect("http://localhost:3000/api/gmail/AuthCallback/authcallback");
-      //  res.setHeader(
-      //   "Set-Cookie",
-      //   serialize("gmail-refresh-token", tokens.refresh_token ?? "", {
-      //     sameSite: "none",
-      //     path: "/",
-      //     secure: true,
-      //   })
-      // );
-         
-        // res.redirect("http://localhost:3000/api/gmail/AuthCallback/authcallback");
-      
-      
+      ).redirect("http://localhost:3000/api/gmail/SetWatch/watch");
+            
       res.send({ message: "token Setted Successfully" });
     }
   } catch (err) {

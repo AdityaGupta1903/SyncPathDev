@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           secure: true,
           httpOnly:true
         })
-      ).redirect("http://localhost:3000/api/gmail/SetWatch/watch");
+      ).redirect("http://localhost:3000/api/gmail/SetWatch/setwatch");
             
       res.send({ message: "token Setted Successfully" });
     }

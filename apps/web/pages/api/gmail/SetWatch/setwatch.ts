@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       userId: "me",
       requestBody: {
         topicName: "projects/syncpath-437211/topics/syncpathqueue",
+        labelIds: ["INBOX"]
       },
     });
 

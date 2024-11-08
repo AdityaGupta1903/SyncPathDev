@@ -20,18 +20,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
     if (typeof code === "string") {
       const { tokens } = await oauth2Client.getToken(code);
+
       oauth2Client.setCredentials(tokens);
-      
+      let gmail = google.gmail({ version: "v1", auth: oauth2Client });
+      const currentProfileEmailAddress = (await gmail.users.getProfile({ userId: "me" })).data.emailAddress;
+      if (tokens.refresh_token) {
+        if (currentProfileEmailAddress) {
+          const user = await prisma.user.findUnique({
+            where: {
+              email: currentProfileEmailAddress
+            }
+          })
+          if (user) {
+            await prisma.user.update({
+              where: {
+                email: currentProfileEmailAddress
+              },
+              data: {
+                GmailRefreshToken: tokens.refresh_token
+              }
+            })
+          }
+        }
+      }
+      console.log("RefeshToken received" + " " + tokens.refresh_token);   /// Refresh Token is only Generated at First Time Login not the Subsequent One
+
       res.setHeader(
         "Set-Cookie",
         serialize("gmail_access_token", tokens.access_token ?? "", {
           sameSite: "none",
           path: "/",
           secure: true,
-          httpOnly:true
+          httpOnly: true
         })
       ).redirect("http://localhost:3000/api/gmail/SetWatch/setwatch");
-            
+
       res.send({ message: "token Setted Successfully" });
     }
   } catch (err) {

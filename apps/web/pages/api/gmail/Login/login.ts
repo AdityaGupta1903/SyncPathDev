@@ -21,11 +21,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
     const url = oauth2Client.generateAuthUrl({
       // 'online' (default) or 'offline' (gets refresh_token)
       access_type: "offline",
-
       // If you only need one scope, you can pass it as a string
       scope: scopes,
-    });
 
+    });
+    console.log(url);
     res.redirect(url);
   } catch (err) {
     console.log(err);

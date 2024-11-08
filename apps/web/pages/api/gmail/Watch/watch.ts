@@ -39,8 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       if (!gmailCookie) {
         res.send({ message: "Invalid Cookie Send" });
       }
-
-      oauth2Client.setCredentials({ access_token: gmailCookie });
+      
+      oauth2Client.setCredentials({ access_token: gmailCookie ,refresh_token:User.GmailRefreshToken}); /// lets check it tomorrow it works or not
       let gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
 

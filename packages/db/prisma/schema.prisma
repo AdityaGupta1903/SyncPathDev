@@ -14,10 +14,12 @@ datasource db {
 }
 
 model User {
-  UserId   String @id @default(uuid())
-  email    String @unique
-  Password String
-  Zaps     Zap[]
+  UserId            String  @id @default(uuid())
+  email             String  @unique
+  Password          String
+  Zaps              Zap[]
+  GmailAccessToken  String?
+  GmailRefreshToken String?
 }
 
 model Zap {

@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
 
-    console.log(response);
+    // console.log(response);
     res.send({ message: "Watch Set SuccessFully" });
   } catch (err) {
     res.send({ message: "Error Setting" });

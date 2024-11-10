@@ -10,59 +10,7 @@ import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
 @Injectable()
 export class AppService {
-  // async SignIn(user: CreateUserDTO) {
-  //   try {
-  //     const UserName = user.UserName;
-  //     const Password = user.Password;
-  //     const User = await prisma.user.findUnique({
-  //       where: {
-  //         UserName: UserName,
-  //         Password: Password
-  //       }
-  //     })
-  //     if (User) {
-  //       const secret = "S3CRET";
-  //       const token = Jwt.sign({ UserName: UserName, Password: Password }, secret);
-  //       return { message: "SignIn Successfull", token: token,statusCode:200 }
-  //     }
-  //     else {
-  //       return new NotFoundException('User Not Found')
-  //     }
-  //   }
-  //   catch (err) {
-  //     return new BadRequestException(err);
-  //   }
-  // }
-  // async SignUp(user: CreateUserDTO) {
-  //   try {
-  //     const UserName = user.UserName;
-  //     const Password = user.Password;
-
-  //     const User = await prisma.user.findUnique({
-  //       where: {
-  //         UserName: UserName,
-  //       }
-  //     })
-
-  //     if (User) {
-  //       return new ConflictException('User Already Exists');
-  //     }
-  //     else {
-  //       const secret = "S3CRET";
-  //       const token = Jwt.sign({ UserName: UserName, Password: Password }, secret);
-  //       await prisma.user.create({
-  //         data: {
-  //           UserName: UserName,
-  //           Password: Password
-  //         }
-  //       })
-  //       return { message: "SignUp Successfull", token: token,statusCode:200 }
-  //     }
-  //   }
-  //   catch (err) {
-  //     return new BadRequestException(err);
-  //   }
-  // }
+  
   async CreateZap(ZapDetails: ZapDTO) {
     try {
       const email = ZapDetails.email
@@ -181,4 +129,5 @@ export class AppService {
       return new BadRequestException(err);
     }
   }
+  
 }

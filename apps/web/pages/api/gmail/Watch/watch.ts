@@ -2,6 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { google } from "googleapis";
 import prisma from "@shared/db"
+import axios from 'axios';
+
+
 
 
 type ResponseData = {
@@ -39,15 +42,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       if (!gmailCookie) {
         res.send({ message: "Invalid Cookie Send" });
       }
-      
-      oauth2Client.setCredentials({ access_token: gmailCookie ,refresh_token:User.GmailRefreshToken}); /// lets check it tomorrow it works or not
+
+      oauth2Client.setCredentials({ access_token: User.GmailAccessToken, refresh_token: User.GmailRefreshToken }); /// The oAuth Library Automatically refreshes the Access Token using Refresh Token
       let gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
 
       // console.log(message)
       const gmailbody = await gmail.users.messages.list({ userId: "me", maxResults: 1 });
-      console.log(gmailbody?.data?.messages[0]?.id);
-      console.log((await gmail.users.messages.get({userId : "me",id:gmailbody?.data?.messages[0]?.id ?? ""})).data)
+      // console.log(gmailbody?.data?.messages[0]?.id);
+      // console.log(((await gmail.users.messages.get({userId : "me",id:gmailbody?.data?.messages[0]?.id ?? ""})).data))
+      const PartsArray = ((await gmail.users.messages.get({ userId: "me", id: gmailbody?.data?.messages[0]?.id ?? "" })).data).payload?.parts;
+      PartsArray && PartsArray.map((part) => {
+        if (part.body?.attachmentId) {
+          gmail.users.messages.attachments.get({ userId: "me", messageId: gmailbody?.data?.messages[0]?.id ?? "", id: part.body.attachmentId }).then((res) => {
+            //  console.log(res.data.data);
+            const pdfData = Buffer.from(res.data.data ?? "", "base64");
+            axios.post("http://localhost:3000/api/drive/CreateAttachment/createattachment", {
+              AttachmentData: pdfData,
+              emailAddress: User.email
+            },
+              {
+                maxBodyLength: 100000000,
+                maxContentLength: 100000000
+              })
+            //  console.log(pdfData);
+          }).catch(() => console.log("No Attachment found"))
+        }
+      })
+      // console.log(await gmail.users.messages.attachments.get({userId:"me",messageId:gmailbody?.data?.messages[0]?.id ?? ""}))
 
     }
 

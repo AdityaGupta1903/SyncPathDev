@@ -55,6 +55,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
       ).redirect("http://localhost:3000/api/gmail/SetWatch/setwatch");
 
+      /// Update that the gmail is connected
+
+      if (currentProfileEmailAddress) {
+        await prisma.user.update({
+          where: {
+            email: currentProfileEmailAddress
+          },
+          data: {
+            isGmailConnected: true
+          }
+        })
+      }
+
       res.send({ message: "token Setted Successfully" });
     }
   } catch (err) {

@@ -53,20 +53,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (part.body?.attachmentId) {
           gmail.users.messages.attachments.get({ userId: "me", messageId: gmailbody?.data?.messages[0]?.id ?? "", id: part.body.attachmentId }).then((res) => {
 
-            //  console.log(res.data.data);
-
-            const pdfData = Buffer.from(res.data.data ?? "", "base64");
-
             axios.post("http://localhost:3000/api/drive/CreateAttachment/createattachment", {
               AttachmentData: res.data.data,
               emailAddress: User.email,
-              messageId : gmailbody?.data?.messages[0]?.id
+              messageId : gmailbody?.data?.messages[0]?.id,
+              filename : part.filename,
+              mimeType : part.mimeType
             },
               {
                 maxBodyLength: 100000000,
                 maxContentLength: 100000000
               })
-            console.log(pdfData);
+
           }).catch(() => console.log("No Attachment found"))
         }
       })
@@ -80,4 +78,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   } catch (err) {
     console.log(err);
   }
+}
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '4mb',
+    },
+  },
 }

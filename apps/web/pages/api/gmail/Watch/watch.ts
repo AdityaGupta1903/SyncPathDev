@@ -4,9 +4,6 @@ import { google } from "googleapis";
 import prisma from "@shared/db"
 import axios from 'axios';
 
-
-
-
 type ResponseData = {
   message: string;
 };
@@ -15,7 +12,7 @@ type ResponseData = {
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT_URI = "http://localhost:3000/api/gmail/AuthCode/auth";
-// let map = new Map<string, string>();
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   /// We have to set Tokens in this function
   try {
@@ -26,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const data = Buffer.from(message.data, "base64").toString("utf-8");
-    // console.log("Notification received:", JSON.parse(data)?.emailAddress);
+
 
 
     let User = await prisma.user.findUnique({
@@ -55,17 +52,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       PartsArray && PartsArray.map((part) => {
         if (part.body?.attachmentId) {
           gmail.users.messages.attachments.get({ userId: "me", messageId: gmailbody?.data?.messages[0]?.id ?? "", id: part.body.attachmentId }).then((res) => {
+
             //  console.log(res.data.data);
+
             const pdfData = Buffer.from(res.data.data ?? "", "base64");
+
             axios.post("http://localhost:3000/api/drive/CreateAttachment/createattachment", {
-              AttachmentData: pdfData,
-              emailAddress: User.email
+              AttachmentData: res.data.data,
+              emailAddress: User.email,
+              messageId : gmailbody?.data?.messages[0]?.id
             },
               {
                 maxBodyLength: 100000000,
                 maxContentLength: 100000000
               })
-            //  console.log(pdfData);
+            console.log(pdfData);
           }).catch(() => console.log("No Attachment found"))
         }
       })

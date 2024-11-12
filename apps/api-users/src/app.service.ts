@@ -129,5 +129,13 @@ export class AppService {
       return new BadRequestException(err);
     }
   }
+  async CreateAttachment (pdfData : string,email : string){
+    try{
+    /// Add Google Drive Logic Here
+    }
+    catch(err){
+      return new BadRequestException(err);
+    }
+  }
   
 }

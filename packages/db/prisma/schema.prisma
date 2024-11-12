@@ -24,6 +24,7 @@ model User {
   DriveRefreshToken String?
   isGmailConnected  Boolean? @default(false)
   isDriveConnected  Boolean? @default(false)
+  MsgAcknowledged   String[]
 }
 
 model Zap {

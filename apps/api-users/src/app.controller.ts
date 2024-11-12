@@ -6,6 +6,7 @@ import { TriggerDetails } from './dto/TriggerDetails.dto';
 import { AvailableTriggerDetails } from './dto/AvailableTriggerDetails';
 import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
+import { AttachementDetails } from './dto/AttachementDetails';
 import { Request as request } from "express"
 import { decode } from 'next-auth/jwt'
 
@@ -42,6 +43,10 @@ export class AppController {
   @Post('/api/v1/CreateAvailableAction')
   CreateAvailableAction(@Body(ValidationPipe) CreateAvailableAction: CreateAvailableAction) {
     return this.appService.CreateAvailableAction(CreateAvailableAction)
+  }
+  @Post('/api/v1/CreateAttachment')
+  CreateAttachment(@Body(ValidationPipe) AttachmentDetails: AttachementDetails) {
+    return this.appService.CreateAttachment(AttachmentDetails.data, AttachmentDetails.email)
   }
 }
 

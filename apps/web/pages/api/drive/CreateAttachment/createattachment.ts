@@ -17,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     let emailId = AttachmentData.emailAddress;
     let mimeType = AttachmentData.mimeType;
     let filename = AttachmentData.filename;
+    let Attachmentdata = AttachmentData.AttachmentData
     let User = await prisma.user.findUnique({
       where: {
         email: emailId
@@ -26,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       let addAttachement = async () => {
         if (User) {
 
-          const response = await AttachmentQueue.add('CreateAttachment',{msgId,emailId,mimeType,filename});
+          const response = await AttachmentQueue.add(msgId,{msgId,emailId,mimeType,filename,Attachmentdata});
           if(response){
             res.send({message : "Attachment Sent to Queue Successfully"});
           }
@@ -34,59 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             res.send({message : "Some Error has occured"})
           }
 
-          // let oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
-          // let MessageIds = User.MsgAcknowledged; /// How many Msg Id have been Processed
-          // let findIdx = -1;
-          // MessageIds.map((ele) => {
-          //   if (ele == msgId) {
-          //     findIdx = 0;
-          //   }
-          // })
-          // if (findIdx == -1) {
-          //   if (User.DriveAccessToken && User.DriveRefreshToken) {
-              
-          //     oauth2Client.setCredentials({ access_token: User.DriveAccessToken,refresh_token : User.GmailRefreshToken});
-          //     // oauth2Client.setCredentials({})
-          //     const bufferStream = new Readable();
-          //     bufferStream.push(Buffer.from(AttachmentData.AttachmentData, "base64")); /// To add Large Sized Data
-          //     bufferStream.push(null); // Signals the end of the stream
-          //     let drive = google.drive({
-          //       version: 'v3',
-          //       auth: oauth2Client
-          //     });
-          //     const res = await drive.files.create({
-          //       requestBody: {
-          //         name: filename,
-          //         mimeType: mimeType
-          //       },
-          //       media: {
-          //         mimeType: mimeType,
-          //         body: bufferStream
-          //       }
-          //     })
-          //     if (res.status == 200) {
-          //       MessageIds.push(msgId);
-          //       await prisma.user.update({
-          //         where: {
-          //           email: emailId
-          //         },
-          //         data: {
-          //           MsgAcknowledged: MessageIds
-          //         }
-          //       })
-          //     }
-          //   }
-          // }
         }
         else {
-          res.send({ message: "Attachment has been already send to the drive" })
+          res.send({ message: "User not Found" })
         }
       }
       addAttachement();
-   
-
-    // clearTimeout(timeout);
-
   } catch (err) {
     console.log(err);
   }

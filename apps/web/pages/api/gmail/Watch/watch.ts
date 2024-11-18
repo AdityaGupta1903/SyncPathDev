@@ -24,8 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const data = Buffer.from(message.data, "base64").toString("utf-8");
 
-
-
     let User = await prisma.user.findUnique({
       where: {
         email: JSON.parse(data)?.emailAddress
@@ -43,22 +41,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       oauth2Client.setCredentials({ access_token: User.GmailAccessToken, refresh_token: User.GmailRefreshToken }); /// The oAuth Library Automatically refreshes the Access Token using Refresh Token
       let gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
-
-      // console.log(message)
       const gmailbody = await gmail.users.messages.list({ userId: "me", maxResults: 1 });
-      // console.log(gmailbody?.data?.messages[0]?.id);
-      // console.log(((await gmail.users.messages.get({userId : "me",id:gmailbody?.data?.messages[0]?.id ?? ""})).data))
-      const PartsArray = ((await gmail.users.messages.get({ userId: "me", id: gmailbody?.data?.messages[0]?.id ?? "" })).data).payload?.parts;
+      let msgId = gmailbody?.data?.messages ? gmailbody?.data?.messages[0]?.id ?? "" : ""
+      const PartsArray = ((await gmail.users.messages.get({ userId: "me", id: msgId })).data).payload?.parts;
       PartsArray && PartsArray.map((part) => {
         if (part.body?.attachmentId) {
-          gmail.users.messages.attachments.get({ userId: "me", messageId: gmailbody?.data?.messages[0]?.id ?? "", id: part.body.attachmentId }).then((res) => {
+          gmail.users.messages.attachments.get({ userId: "me", messageId: msgId, id: part.body.attachmentId }).then((res) => {
 
             axios.post("http://localhost:3000/api/drive/CreateAttachment/createattachment", {
               AttachmentData: res.data.data,
               emailAddress: User.email,
-              messageId : gmailbody?.data?.messages[0]?.id,
-              filename : part.filename,
-              mimeType : part.mimeType
+              messageId: gmailbody?.data?.messages ? gmailbody?.data?.messages[0]?.id : "",
+              filename: part.filename,
+              mimeType: part.mimeType
             },
               {
                 maxBodyLength: 100000000,
@@ -68,12 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           }).catch(() => console.log("No Attachment found"))
         }
       })
-      // console.log(await gmail.users.messages.attachments.get({userId:"me",messageId:gmailbody?.data?.messages[0]?.id ?? ""}))
-
     }
-
-
-
 
   } catch (err) {
     console.log(err);

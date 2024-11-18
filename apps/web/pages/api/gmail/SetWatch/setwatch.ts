@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     oauth2Client.setCredentials({ access_token: accessToken });
     let gmail = google.gmail({ version: "v1", auth: oauth2Client });
+    
 
     const currentProfileEmailAddress = (await gmail.users.getProfile({ userId: "me" })).data.emailAddress;
     if (currentProfileEmailAddress) {

@@ -14,17 +14,20 @@ datasource db {
 }
 
 model User {
-  UserId            String   @id @default(uuid())
-  email             String   @unique
-  Password          String
-  Zaps              Zap[]
-  GmailAccessToken  String?
-  GmailRefreshToken String?
-  DriveAccessToken  String?
-  DriveRefreshToken String?
-  isGmailConnected  Boolean? @default(false)
-  isDriveConnected  Boolean? @default(false)
-  MsgAcknowledged   String[]
+  UserId                  String   @id @default(uuid())
+  email                   String   @unique
+  Password                String
+  Zaps                    Zap[]
+  GmailAccessToken        String?
+  GmailRefreshToken       String?
+  DriveAccessToken        String?
+  DriveRefreshToken       String?
+  SpreadSheetAccessToken  String?
+  SpreadSheetRefreshToken String?
+  isGmailConnected        Boolean? @default(false)
+  isDriveConnected        Boolean? @default(false)
+  isSpreadSheetConnected  Boolean? @default(false)
+  MsgAcknowledged         String[]
 }
 
 model Zap {

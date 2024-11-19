@@ -8,7 +8,7 @@ import { Readable } from "stream";
 const connection = new Redis({ maxRetriesPerRequest: null });  /// Some Error Must be there that's why it is Using maxRetriesPerRequest
 
 const worker = new Worker(
-  'AttachmentQueue', // this is the queue name, the first string parameter we provided for Queue()
+  'AttachmentQueue', // Queue Name
   async (job) => {
     try {
       const data = job?.data;

@@ -15,7 +15,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
         const scopes = [
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/userinfo.email",  /// For getting the UserData Such as Email or other Things
-            "https://www.googleapis.com/auth/userinfo.profile" 
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/drive",           /// Drive Scope Required because we have to All the list and "V4" of spreadsheet api does not have this functionality
+            "https://www.googleapis.com/auth/drive.file"
         ];
         const url = oauth2Client.generateAuthUrl({
             // 'online' (default) or 'offline' (gets refresh_token)

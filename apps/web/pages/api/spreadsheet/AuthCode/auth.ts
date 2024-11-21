@@ -21,8 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
         if (typeof code === "string") {
             const { tokens } = await oauth2Client.getToken(code);
-        
-
             oauth2Client.setCredentials(tokens);
             const oauth2 = google.oauth2({ version: "v2", auth: oauth2Client});
             const userInfo = await oauth2.userinfo.get();

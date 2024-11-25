@@ -27,8 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 [1, 2],
                 [3, 4],
             ];
+            const spreadSheetvalue = await spreadsheet.spreadsheets.values.get({ spreadsheetId: SpreadSheetId,range:"A:A" });
+            console.log(spreadSheetvalue.data);
             const res = await spreadsheet.spreadsheets.values.update({ spreadsheetId: SpreadSheetId, range: "A3:B4", requestBody: { values: data }, valueInputOption: "USER_ENTERED" });
-            console.log(res);
+            // console.log(res);
         }
     }
     catch (err) {

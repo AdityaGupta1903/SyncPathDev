@@ -18,6 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     let mimeType = AttachmentData.mimeType;
     let filename = AttachmentData.filename;
     let Attachmentdata = AttachmentData.AttachmentData
+    let SendersEmail = AttachmentData.SendersEmail
     let User = await prisma.user.findUnique({
       where: {
         email: emailId
@@ -27,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       let addAttachement = async () => {
         if (User) {
 
-          const response = await AttachmentQueue.add(msgId,{msgId,emailId,mimeType,filename,Attachmentdata});
+          const response = await AttachmentQueue.add(msgId,{msgId,emailId,mimeType,filename,Attachmentdata,SendersEmail});
           if(response){
             res.send({message : "Attachment Sent to Queue Successfully"});
           }

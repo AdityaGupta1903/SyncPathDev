@@ -37,7 +37,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 email: currentProfileEmailAddress
               },
               data: {
-                GmailRefreshToken: tokens.refresh_token
+                GmailRefreshToken: tokens.refresh_token,
+                GmailAccessToken: tokens.access_token
+
               }
             })
           }

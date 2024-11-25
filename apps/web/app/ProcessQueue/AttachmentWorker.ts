@@ -8,7 +8,7 @@ import { Readable } from "stream";
 const connection = new Redis({ maxRetriesPerRequest: null });  /// Some Error Must be there that's why it is Using maxRetriesPerRequest
 
 const worker = new Worker(
-  'AttachmentQueue', // Queue Name
+  'EmailAttachmentQueue', // Queue Name
   async (job) => {
     try {
       const data = job?.data;
@@ -29,7 +29,9 @@ const worker = new Worker(
         })
         if (findIdx == -1) {
           if (User.DriveAccessToken && User.DriveRefreshToken) {
-            oauth2Client.setCredentials({ access_token: User.DriveAccessToken, refresh_token: User.DriveRefreshToken });
+            oauth2Client.setCredentials({ access_token: User.DriveAccessToken, refresh_token: User.DriveRefreshToken, expiry_date: Date.now() + 365 * 24 * 60 * 60 * 1000 });
+
+            console.log("Reached")
             // oauth2Client.setCredentials({})
             const bufferStream = new Readable();
             bufferStream.push(Buffer.from(Attachmentdata, "base64")); /// To add Large Sized Data

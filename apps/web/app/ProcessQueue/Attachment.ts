@@ -3,9 +3,9 @@ import Redis from 'ioredis';
 
 // Initialize Redis connection
 const connection = new Redis();
-
+console.log("Reached");
 // Initialize Queue
-export const AttachmentQueue = new Queue('AttachmentQueue', {
+export const AttachmentQueue = new Queue('EmailAttachmentQueue', {
   connection, // Pass Redis connection
   defaultJobOptions: {
     attempts: 2,
@@ -15,6 +15,7 @@ export const AttachmentQueue = new Queue('AttachmentQueue', {
     },
   },
 });
+// console.log("Executed")
 
 
 

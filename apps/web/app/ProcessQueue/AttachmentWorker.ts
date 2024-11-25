@@ -1,4 +1,4 @@
-import { Worker, Queue } from 'bullmq';
+import { Worker } from 'bullmq';
 import Redis from 'ioredis';
 import { google } from "googleapis"
 import prisma from "@shared/db"
@@ -79,5 +79,6 @@ const worker = new Worker(
     removeOnFail: { count: 5000 },
   }
 );
+// console.log("Reached")
 
 export default worker;

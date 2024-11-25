@@ -10,11 +10,18 @@ export const AttachmentQueue = new Queue('EmailAttachmentQueue', {
   defaultJobOptions: {
     attempts: 2,
     backoff: {
-      type: 'exponential',
+      type: 'fixed',
       delay: 5000,
     },
   },
 });
+export const SpreadSheetQueue = new Queue('SpreadSheetSpecialTraitQueue',{
+  connection,
+  defaultJobOptions : {
+    attempts : 2,
+    delay : 5000
+  }
+})
 // console.log("Executed")
 
 

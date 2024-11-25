@@ -35,7 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           else{
             res.send({message : "Some Error has occured"})
           }
-
         }
         else {
           res.send({ message: "User not Found" })

@@ -10,7 +10,7 @@ import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
 @Injectable()
 export class AppService {
-  
+
   async CreateZap(ZapDetails: ZapDTO) {
     try {
       const email = ZapDetails.email
@@ -65,7 +65,7 @@ export class AppService {
       const AvailableTriggerId = TriggerDetails.AvailableTriggerId;
       console.log(ZapId + " " + AvailableTriggerId)
       ///find the Available TriggerName
-    
+
       const res = await prisma.trigger.create({
         data: {
           ZapId: ZapId,
@@ -87,7 +87,7 @@ export class AppService {
           AvailableActionName: ActionName
         }
       })
-        return `Action Created with Action Id ${res.AvailableActionId}`
+      return `Action Created with Action Id ${res.AvailableActionId}`
     }
     catch (err) {
       return new BadRequestException(err);
@@ -109,33 +109,74 @@ export class AppService {
       return new BadRequestException(err);
     }
   }
-  async getUserZaps(email : string){
-    try{
+  async getUserZaps(email: string) {
+    try {
       console.log(email);
-     const user = await prisma.user.findFirst({
-      where:{
-        email : email
-      }
-     })
-    //  console.log(user);
-     const res = await prisma.zap.findMany({
-      where:{
-        UserId : user.UserId
-      }
-     })
-     return res;
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email
+        }
+      })
+      //  console.log(user);
+      const res = await prisma.zap.findMany({
+        where: {
+          UserId: user.UserId
+        }
+      })
+      return res;
     }
-    catch(err){
+    catch (err) {
       return new BadRequestException(err);
     }
   }
-  async CreateAttachment (pdfData : string,email : string){
-    try{
-    /// Add Google Drive Logic Here
+  async CreateAttachment(pdfData: string, email: string) {
+    try {
+      /// Add Google Drive Logic Here
     }
-    catch(err){
+    catch (err) {
       return new BadRequestException(err);
     }
   }
-  
+  async SpreadSheetTrait(trait: string, email: string) {
+    try {
+      let user = await prisma.user.findUnique({
+        where: {
+          email: email
+        }
+      })
+
+      if (user) {
+        let TraitArray = await prisma.gmailTraits.findMany({
+          where: {
+            UserId: user.UserId
+          }
+        });
+        let found = false;
+        TraitArray.map((ele) => {
+          if (ele.Traitname === trait) {
+            found = true;
+          }
+        })
+        if (!found) {
+          const res = await prisma.gmailTraits.create({
+            data: {
+              Traitname: trait,
+              UserId: user.UserId
+            }
+          })
+          return res.TraitId
+        }
+        else {
+          new BadRequestException(`Trait Already Exists with name ${trait}`);
+        }
+      }
+      else {
+        return new BadRequestException("User Not Found");
+      }
+    }
+    catch (err) {
+      return new BadRequestException(err);
+    }
+  }
+
 }

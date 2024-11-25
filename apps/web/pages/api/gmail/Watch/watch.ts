@@ -11,12 +11,10 @@ const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT_URI = "http://localhost:3000/api/gmail/AuthCode/auth";
 
-
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   /// We have to set Tokens in this function
   try {
-    
+
     const message = req.body.message;
     if (!message || !message.data) {
       return res.status(400).send({ message: "Invalid message format" });
@@ -41,21 +39,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       oauth2Client.setCredentials({ access_token: User.GmailAccessToken, refresh_token: User.GmailRefreshToken }); /// The oAuth Library Automatically refreshes the Access Token using Refresh Token
       let gmail = google.gmail({ version: "v1", auth: oauth2Client });
 
-      const gmailbody = await gmail.users.messages.list({ userId: "me", maxResults: 1 });
+      const gmailbody = await gmail.users.messages.list({ userId: "me", maxResults: 1 }); /// To fetch the Top Result from the Gmail
       let msgId = gmailbody?.data?.messages ? gmailbody?.data?.messages[0]?.id ?? "" : ""
       const PartsArray = ((await gmail.users.messages.get({ userId: "me", id: msgId })).data).payload?.parts;
       let Headers = ((await gmail.users.messages.get({ userId: "me", id: msgId })).data).payload?.headers;
       // console.log((PartsArray[1]?.body?.data.replace(/-/g, '+').replace(/_/g, '/')));
-      
+
       let SendersEmail: string | undefined = "";
       Headers?.map((ele) => {
-
         if (ele.name === "From") {
-
           SendersEmail = ele.value?.split(" ")[ele.value?.split(" ").length - 1]?.split("<")[1]?.split(">")[0]
         }
       })
-     /// This is for Attachement Purposes 
+      /// This is for Attachement Purposes 
       PartsArray && PartsArray.map((part) => {
         if (part.body?.attachmentId) {
           gmail.users.messages.attachments.get({ userId: "me", messageId: msgId, id: part.body.attachmentId }).then((res) => {
@@ -78,20 +74,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       })
 
       //// For Some Trait Related Email and then Post it To SpreadSheet
-          
+
       const gmailTraitArray = await prisma.gmailTraits.findMany({
-        where : {
-          UserId : User.UserId
+        where: {
+          UserId: User.UserId
         }
       })
-      PartsArray?.map((part,index)=>{
-        if(index == 1){   /// Index1 Used Because we the Index0 Returns the H
-          let Data = Buffer.from(part.body?.data ?? "","base64").toString("utf-8");
-          gmailTraitArray.map((trait)=>{
+      PartsArray?.map((part, index) => {
+        if (index == 1) {   /// Index1 Used Because we the Index0 Returns the H
+          let Data = Buffer.from(part.body?.data ?? "", "base64").toString("utf-8");
+          gmailTraitArray.map((trait) => {
             let traitName = trait.Traitname;
-            if(Data.toLowerCase().search(traitName)){
+            if (Data.toLowerCase().search(traitName)) {
               //// Send a Api Call to Create the Entry in the Excel File /// Save Sends Name, Date, Time and Data
-               
+              axios.post("http://localhost:3000/api/spreadsheet/WriteData/write", {
+                SendersEmail: SendersEmail,
+                MessageId: msgId,
+                UserEmail : User.email
+              })
             }
           })
         }

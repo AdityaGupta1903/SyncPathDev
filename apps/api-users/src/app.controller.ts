@@ -9,6 +9,7 @@ import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
 import { AttachementDetails } from './dto/AttachementDetails';
 import { Request as request } from "express"
 import { decode } from 'next-auth/jwt'
+import { GmailTrait } from './dto/GmailTrait';
 
 @Controller()
 export class AppController {
@@ -48,6 +49,11 @@ export class AppController {
   CreateAttachment(@Body(ValidationPipe) AttachmentDetails: AttachementDetails) {
     return this.appService.CreateAttachment(AttachmentDetails.data, AttachmentDetails.email)
   }
+  @Post('/api/v1/CreateGmailTrait')
+  CreateGmailTrait(@Body(ValidationPipe) GmailTraitDetails: GmailTrait) {
+    return this.appService.SpreadSheetTrait(GmailTraitDetails.trait, GmailTraitDetails.email)
+  }
+
 }
 
 

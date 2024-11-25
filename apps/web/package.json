@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next dev --turbo",
     "Attachment:Queue": "tsx --watch app/ProcessQueue/Attachment.ts",
-    "Attachment:Worker": "tsx --watch app/ProcessQueue/Attachmentworker.ts",
+    "Attachment:Worker": "tsx  app/ProcessQueue/Attachmentworker.ts",
+    "SpreadSheetWorker": "tsx  app/ProcessQueue/SpreadSheetQueue.ts",
     "lint": "next lint"
   },
   "dependencies": {

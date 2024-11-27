@@ -10,7 +10,7 @@ const worker = new Worker(
     async (job) => {
        /// Perform the Job Here
        const data = job.data;
-       console.log("Job Data");
+       console.log("JobData",data);
     },
     {
       connection,

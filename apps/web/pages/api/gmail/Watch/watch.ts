@@ -94,7 +94,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                   axios.post("http://localhost:3000/api/spreadsheet/WriteData/write", {
                     SendersEmail: SendersEmail,
                     MessageId: msgId,
-                    UserEmail: User.email
+                    UserEmail: User.email,
+                    Trait: traitName,
+                    CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+                    CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
                   })
                 }
               })

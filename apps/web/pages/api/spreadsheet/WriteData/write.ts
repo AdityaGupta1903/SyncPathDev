@@ -4,21 +4,17 @@ import prisma from "@shared/db";
 import { SpreadSheetQueue } from "../../../../app/ProcessQueue/Attachment";
 
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/spreadsheet/AuthCode/auth"; /// Useless in this file
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-        const { SendersEmail, MessageId, UserEmail } = req.body
+        const { SendersEmail, MessageId, UserEmail, Trait, CLIENT_ID, CLIENT_SECRET } = req.body
 
         const promise = new Promise((resolve, reject) => {
             try {
                 let AddRecordToSpredSheet = async () => {
                     try {
 
-                        const response = await SpreadSheetQueue.add(MessageId, { MessageId, SendersEmail, UserEmail });
+                        const response = await SpreadSheetQueue.add(MessageId, { MessageId, SendersEmail, UserEmail, Trait, CLIENT_ID, CLIENT_SECRET });
                         if (response) {
                             console.log("Details have been pushed to SpreadsheetQueue");
                         }
@@ -27,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         }
                     }
                     catch (err) {
-                       console.log(err);
+                        console.log(err);
                     }
                 }
                 AddRecordToSpredSheet().then(() => {

@@ -19,7 +19,9 @@ const worker = new Worker(
         }
       })
       if (User) {
+        
         let oauth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+        
         let MessageIds = User.MsgAcknowledged; /// How many Msg Id have been Processed
         let findIdx = -1;
         MessageIds.map((ele) => {

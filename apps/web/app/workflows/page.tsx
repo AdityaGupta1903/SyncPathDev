@@ -73,9 +73,9 @@ export default function Workflows() {
         />
       </div>
 
-      {id !== "" && UserZaps !== undefined && (
+      {/* {id !== "" && UserZaps !== undefined && (
         <ZapList UserZaps={UserZaps} setSelectedZap={setSelectedZap}></ZapList>
-      )}
+      )} */}
       {/* Display the Last Zap which was Created in the Draggble Component */}
       <div>
         {UserZaps && UserZaps.length > 0 && (
@@ -88,7 +88,7 @@ export default function Workflows() {
         <div className="p-3">
           <div
             onClick={() => {
-              router.push("/Authtemplate");
+              router.push("/authtemplate");
             }}
           >
             <Card className="p-3 w-fit hover:cursor-pointer">

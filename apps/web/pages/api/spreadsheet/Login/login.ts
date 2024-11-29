@@ -27,7 +27,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
 
         });
         console.log(url);
-        res.redirect(url);
+         res.redirect(url);
     } catch (err) {
         console.log(err);
     }

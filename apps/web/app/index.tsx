@@ -4,7 +4,11 @@ import { SessionProvider } from "next-auth/react";
 import { createContext } from "react";
 import { useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { FluentProvider, webLightTheme } from "@fluentui/react-components";
+import {
+  FluentProvider,
+  webLightTheme,
+  
+} from "@fluentui/react-components";
 
 interface MyContextType {
   selectedZap: number;
@@ -27,7 +31,9 @@ export default function Session({
     <ZapContext.Provider value={{ selectedZap, setSelectedZap }}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
-          <FluentProvider>{children}</FluentProvider>
+         
+            <FluentProvider theme={webLightTheme}>{children}</FluentProvider>
+         
         </SessionProvider>
       </QueryClientProvider>
     </ZapContext.Provider>

@@ -9,13 +9,35 @@ import {
 import MailIcon from "@mui/icons-material/Mail";
 import WarningIcon from "@mui/icons-material/Warning";
 import { OverlayDrawer } from "@fluentui/react-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Drawer, TextField } from "@mui/material";
-import axios from "axios";
+import { getUserDetails } from "../api/function";
+import { useSession } from "next-auth/react";
+import DoneIcon from "@mui/icons-material/Done";
 
 export default function () {
-  const [isGmailDrawerOpen, setIsGmailDrawerOpen] = useState<boolean>(false);
-  const [isSpreadSheetOpen, setIsSpreadSheetOpen] = useState<boolean>(false);
+  const [isGmailConnected, setIsGmailConnected] = useState<boolean>(false);
+  const [isSpreadSheetConnected, setIsSpreadSheetConnected] =
+    useState<boolean>(false);
+  const { data, status } = useSession();
+
+  useEffect(() => {
+    const getdetails = async () => {
+      if (data) {
+        const res = await getUserDetails(data.user?.email ?? "");
+        if (res) {
+          if (res.isGmailConnected) {
+            setIsGmailConnected(true);
+          }
+          if (res.isSpreadSheetConnected) {
+            setIsSpreadSheetConnected(true);
+          }
+        }
+      }
+    };
+    getdetails();
+  }, [data]);
+  console.log(isGmailConnected + " " + isSpreadSheetConnected);
   return (
     <>
       <div className="flex min-h-screen justify-center w-full items-center">
@@ -23,7 +45,6 @@ export default function () {
           <div className="w-full h-full flex justify-center">
             <Card
               onClick={() => {
-                setIsGmailDrawerOpen((prev) => !prev);
                 window.open(
                   "http://localhost:3000/api/spreadsheet/Login/login"
                 );
@@ -36,16 +57,15 @@ export default function () {
               ></img>
               <div className="flex justify-center">Connect your Gmail</div>
             </Card>
-            <WarningIcon color="warning" />
+            {isGmailConnected ? (
+              <DoneIcon color="success" />
+            ) : (
+              <WarningIcon color="warning" />
+            )}
           </div>
 
           <div className="w-full h-full flex justify-center">
-            <Card
-              onClick={() => {
-                setIsSpreadSheetOpen((prev) => !prev);
-              }}
-              className="w-[30%] p-3 m-2 hover:cursor-pointer"
-            >
+            <Card className="w-[30%] p-3 m-2 hover:cursor-pointer">
               <img
                 className="h-[40px] object-contain"
                 src="https://cdn.pixabay.com/photo/2017/03/08/21/21/spreadsheet-2127832_640.png"
@@ -55,7 +75,11 @@ export default function () {
                 Connect Your SpreadSheet
               </div>
             </Card>
-            <WarningIcon color="warning" />
+            {isSpreadSheetConnected ? (
+              <DoneIcon color="success" />
+            ) : (
+              <WarningIcon color="warning" />
+            )}
           </div>
         </div>
       </div>

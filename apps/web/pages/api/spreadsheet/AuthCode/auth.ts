@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { google } from "googleapis";
 import prisma from "@shared/db"
 import { serialize } from "cookie";
+import Jwt from "jsonwebtoken";
 
 type ResponseData = {
     message: string;
@@ -67,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/workflows?${currentProfileEmailAddress}`);
+                        ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     }).catch(() => {
                         res.setHeader(
                             "Set-Cookie",
@@ -77,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/workflows?${currentProfileEmailAddress}`);
+                        ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     })
 
                 }
@@ -90,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             secure: true,
                             httpOnly: true
                         })
-                    ).redirect(`http://localhost:3000/workflows?${currentProfileEmailAddress}`);
+                    ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                 }
 
             }

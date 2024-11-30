@@ -1,5 +1,7 @@
 import axios from "axios";
 import { Root } from "../modals/UserZaps";
+import { UserDetails } from "../modals/UserDetails";
+
 /// Added Comment to Test WebHook
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
   try {
@@ -57,6 +59,22 @@ export async function getZaps(email: string) {
     return res.data;
   } catch (err) {
     return [];
+    console.log(err);
+  }
+}
+
+export async function getUserDetails(Email: string) {
+  try {
+
+    const res = await axios.get("http://localhost:3002/api/v1/getUserDetails", {
+      params: {
+        email: Email
+      }
+    })
+
+    return res.data as UserDetails
+  }
+  catch (err) {
     console.log(err);
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import './../style.css'
+import "./../style.css";
 import {
   Box,
   Button,
@@ -13,11 +13,14 @@ import {
   ListItemText,
 } from "@mui/material";
 import React, { Dispatch, SetStateAction } from "react";
-import { Daum, Root } from "../modals/UserZaps";
-import {useContext} from "react" 
+import { Daum, Root } from "../models/UserZaps";
+import { useContext } from "react";
 import { ZapContext } from "..";
 
-const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateAction<number | undefined>> }> = ({ UserZaps,setSelectedZap }) => {
+const ZapList: React.FC<{
+  UserZaps: Root;
+  setSelectedZap: Dispatch<SetStateAction<number | undefined>>;
+}> = ({ UserZaps, setSelectedZap }) => {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -32,17 +35,19 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
     >
       <List className="w-full">
         {UserZaps &&
-          UserZaps?.map((Zap: any,index:number) => (
-            
-            <ListItem  className="hover:bg-green-200  hover:text-white">
+          UserZaps?.map((Zap: any, index: number) => (
+            <ListItem className="hover:bg-green-200  hover:text-white">
               <ListItemButton>
-                <ListItemText primary={Zap.ZapName} onClick={()=>{
-                  zapcontext.setSelectedZap(index);
-                }}/>
+                <ListItemText
+                  primary={Zap.ZapName}
+                  onClick={() => {
+                    zapcontext.setSelectedZap(index);
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
-          <Divider/>
+        <Divider />
       </List>
     </Box>
   );
@@ -50,8 +55,14 @@ const ZapList: React.FC<{ UserZaps : Root  , setSelectedZap : Dispatch<SetStateA
 
   return (
     <div className="w-full">
-      <Button className="rounded-lg" onClick={toggleDrawer(true)} variant="outlined">Previous Workflows</Button>
-      <Drawer sx={{ width: "20%" }}open={open} onClose={toggleDrawer(false)}>
+      <Button
+        className="rounded-lg"
+        onClick={toggleDrawer(true)}
+        variant="outlined"
+      >
+        Previous Workflows
+      </Button>
+      <Drawer sx={{ width: "20%" }} open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
     </div>

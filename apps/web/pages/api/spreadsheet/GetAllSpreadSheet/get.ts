@@ -10,7 +10,8 @@ const REDIRECT_URI = "http://localhost:3000/api/spreadsheet/AuthCode/auth"; /// 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        let emailId = "guptaditya19@gmail.com";
+        let emailId = req.body.emailId;
+        console.log(emailId);
         const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
         let User = await prisma.user.findUnique({
             where: {

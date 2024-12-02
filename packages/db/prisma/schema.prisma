@@ -32,10 +32,12 @@ model User {
 }
 
 model GmailTraits {
-  TraitId   String @id @default(uuid())
-  Traitname String
-  UserId    String @unique
-  User      User   @relation(fields: [UserId], references: [UserId])
+  TraitId         String  @id @default(uuid())
+  Traitname       String
+  UserId          String  @unique
+  User            User    @relation(fields: [UserId], references: [UserId])
+  SpreadSheetName String?
+  SpreadSheetId   String?
 }
 
 model Zap {

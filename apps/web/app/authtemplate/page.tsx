@@ -1,25 +1,41 @@
 "use client";
-import {
-  Button,
-  Card,
-  DrawerBody,
-  DrawerHeader,
-  DrawerHeaderTitle,
-} from "@fluentui/react-components";
-import MailIcon from "@mui/icons-material/Mail";
+import * as React from "react";
+import { Card } from "@fluentui/react-components";
 import WarningIcon from "@mui/icons-material/Warning";
-import { OverlayDrawer } from "@fluentui/react-components";
 import { useEffect, useState } from "react";
-import { Drawer, TextField } from "@mui/material";
+import {
+  Drawer,
+  TextField,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { getUserDetails } from "../api/function";
 import { useSession } from "next-auth/react";
 import DoneIcon from "@mui/icons-material/Done";
+import { getSpreadSheets } from "../api/function";
 
 export default function () {
   const [isGmailConnected, setIsGmailConnected] = useState<boolean>(false);
   const [isSpreadSheetConnected, setIsSpreadSheetConnected] =
     useState<boolean>(false);
+  const [isdraweropen, setIsdrawerOpen] = useState<boolean>(false);
+  const [spreadSheetData, setSpreadSheetData] = useState<
+    { id: string; title: string }[]
+  >([]);
+  const [traitname, setTraitName] = useState<string>();
+  const [selectedSpreadSheetId, setSelectedSpreadSheetId] = useState<string>();
   const { data, status } = useSession();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     const getdetails = async () => {
@@ -37,26 +53,60 @@ export default function () {
     };
     getdetails();
   }, [data]);
-  console.log(isGmailConnected + " " + isSpreadSheetConnected);
+
+  useEffect(() => {
+    const processSpreadSheetDetails = async () => {
+      if (data) {
+        const res = await getSpreadSheets(data.user?.email ?? "");
+        if (res) {
+          let spreadSheet_data: { id: string; title: string }[] = [];
+          res.spread_sheet_data.map((ele) => {
+            let id = ele.id;
+            let title = ele.title;
+            spreadSheet_data.push({ id: id, title: title });
+          });
+          setSpreadSheetData(spreadSheet_data);
+        }
+      }
+    };
+
+    processSpreadSheetDetails();
+  }, [data]);
+
+  console.log(spreadSheetData);
   return (
     <>
       <div className="flex min-h-screen justify-center w-full items-center">
         <div className="w-full flex h-full  flex-col justify-center items-center">
           <div className="w-full h-full flex justify-center">
-            <Card
-              onClick={() => {
-                window.open(
-                  "http://localhost:3000/api/spreadsheet/Login/login"
-                );
-              }}
-              className="w-[30%] m-2 hover:cursor-pointer"
-            >
-              <img
-                className="h-[40px] object-contain"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZCxnrD29c-ThXdrRlx-cDgae5X5nBYpw2fw&s"
-              ></img>
-              <div className="flex justify-center">Connect your Gmail</div>
-            </Card>
+            {isGmailConnected ? (
+              <Card
+                onClick={() => {}}
+                className="w-[30%] m-2 hover:cursor-pointer"
+              >
+                <img
+                  className="h-[40px] object-contain"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZCxnrD29c-ThXdrRlx-cDgae5X5nBYpw2fw&s"
+                ></img>
+                <div className="flex justify-center">Connect your Gmail</div>
+              </Card>
+            ) : (
+              <Card
+                onClick={() => {
+                  window.open(
+                    "http://localhost:3000/api/spreadsheet/Login/login"
+                  );
+                }}
+                className="w-[30%] m-2 hover:cursor-pointer"
+              >
+                <img
+                  className="h-[40px] object-contain"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZCxnrD29c-ThXdrRlx-cDgae5X5nBYpw2fw&s"
+                ></img>
+                <div className="flex justify-center">Connect your Gmail</div>
+              </Card>
+            )}
+
             {isGmailConnected ? (
               <DoneIcon color="success" />
             ) : (
@@ -65,7 +115,12 @@ export default function () {
           </div>
 
           <div className="w-full h-full flex justify-center">
-            <Card className="w-[30%] p-3 m-2 hover:cursor-pointer">
+            <Card
+              onClick={() => {
+                setIsdrawerOpen((prev) => !prev);
+              }}
+              className="w-[30%] p-3 m-2 hover:cursor-pointer"
+            >
               <img
                 className="h-[40px] object-contain"
                 src="https://cdn.pixabay.com/photo/2017/03/08/21/21/spreadsheet-2127832_640.png"
@@ -83,9 +138,9 @@ export default function () {
           </div>
         </div>
       </div>
-      {/* <Drawer
-        open={isGmailDrawerOpen}
-        onClose={() => setIsGmailDrawerOpen(false)}
+      <Drawer
+        open={isdraweropen}
+        onClose={() => setIsdrawerOpen(false)}
         anchor="right"
         sx={{
           "& .MuiDrawer-paper": {
@@ -95,14 +150,62 @@ export default function () {
             backgroundColor: "#f9f9f9",
           },
         }}
-        
       >
         <div className="flex flex-col items-center">
           <div className="mb-4 text-gray-800 bg-green-400 py-3 px-5 rounded-md font-bold shadow-md">
-            Add Your Workflow Details
+            Add Your SpreadSheet Details
           </div>
+          <Box className="w-full mb-5 py-4">
+            <FormControl fullWidth>
+              <InputLabel id="spreadsheet-select-label">
+                Select SpreadSheet
+              </InputLabel>
+              <Select
+                labelId="spreadsheet-select-label"
+                id="spreadsheet-select"
+                label="Select SpreadSheet"
+                className="w-full mb-5"
+                value={selectedSpreadSheetId}
+                onChange={(e) => {
+                  setSelectedSpreadSheetId(e.target.value);
+                }}
+                sx={{
+                  "& .MuiSelect-select": {
+                    padding: "10px",
+                  },
+                }}
+              >
+                {spreadSheetData.map((ele) => {
+                  return (
+                    <MenuItem key={ele.id} value={ele.title}>
+                      {ele.title}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              <TextField
+                id="workflow-name"
+                label="Enter Trait Name"
+                variant="outlined"
+                className="w-full mb-5"
+                value={traitname}
+                onChange={(e) => setTraitName(e.target.value)}
+                sx={{
+                  "& label": { color: "#777" },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ccc",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#888",
+                    },
+                  },
+                }}
+              />
+            </FormControl>
+          </Box>
         </div>
-      </Drawer> */}
+      </Drawer>
     </>
   );
 }

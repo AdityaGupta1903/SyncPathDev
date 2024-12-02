@@ -1,6 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { google } from "googleapis";
-import prisma from "@shared/db";
 import { SpreadSheetQueue } from "../../../../app/ProcessQueue/Attachment";
 
 

@@ -178,5 +178,18 @@ export class AppService {
       return new BadRequestException(err);
     }
   }
+  async getUserDetails(email: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: email
+        }
+      })
+      return user;
+    }
+    catch (err) {
+      return new BadRequestException(err);
+    }
+  }
 
 }

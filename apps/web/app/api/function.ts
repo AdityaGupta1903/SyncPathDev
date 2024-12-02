@@ -1,6 +1,7 @@
 import axios from "axios";
-import { Root } from "../modals/UserZaps";
-import { UserDetails } from "../modals/UserDetails";
+import { Root } from "../models/UserZaps";
+import { UserDetails } from "../models/UserDetails";
+import { SpreadSheet, SpreadSheetDetails } from "../models/SpreadSheetDetails";
 
 /// Added Comment to Test WebHook
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
@@ -73,6 +74,18 @@ export async function getUserDetails(Email: string) {
     })
 
     return res.data as UserDetails
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+export async function getSpreadSheets(email: string) {
+  try {
+    const res = await axios.post('http://localhost:3000/api/spreadsheet/GetAllSpreadSheet/get', {
+      emailId: email
+    });
+    // console.log(res.data)
+    return res.data as SpreadSheet
   }
   catch (err) {
     console.log(err);

@@ -26,7 +26,7 @@ export default function Session({
 }>) {
   const queryClient = new QueryClient();
   const [selectedZap, setSelectedZap] = useState<number>(-1);
-  console.log(process.env.GOOGLE_CLIENT_ID);
+  // console.log(process.env.GOOGLE_CLIENT_ID);
   return (
     <ZapContext.Provider value={{ selectedZap, setSelectedZap }}>
       <QueryClientProvider client={queryClient}>

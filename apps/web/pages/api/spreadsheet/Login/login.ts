@@ -26,7 +26,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
             scope: scopes,
 
         });
-        console.log(url);
+        // console.log(url);
          res.redirect(url);
     } catch (err) {
         console.log(err);

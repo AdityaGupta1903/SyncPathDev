@@ -89,6 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             if (index == 1) {   /// Index1 Used Because we the Index0 Returns the H
               let Data = Buffer.from(part.body?.data ?? "", "base64").toString("utf-8");
               gmailTraitArray.map((trait) => {
+                console.log(trait)
                 let traitName = trait.Traitname;
                 if (Data.toLowerCase().search(traitName.toLowerCase()) !== -1) {
                   axios.post("http://localhost:3000/api/spreadsheet/WriteData/write", {
@@ -96,6 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     MessageId: msgId,
                     UserEmail: User.email,
                     Trait: traitName,
+                    SpreadSheetId: trait.SpreadSheetId,
                     CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
                     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
                   })

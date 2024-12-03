@@ -11,6 +11,7 @@ import { Request as request } from "express"
 import { decode } from 'next-auth/jwt'
 import { GmailTrait } from './dto/GmailTrait';
 import { UserDetails } from './dto/UserDetails.dto';
+import { SpreadSheetTrait } from './dto/SpreadSheetTrait.dto';
 
 
 @Controller()
@@ -51,10 +52,11 @@ export class AppController {
   CreateAttachment(@Body(ValidationPipe) AttachmentDetails: AttachementDetails) {
     return this.appService.CreateAttachment(AttachmentDetails.data, AttachmentDetails.email)
   }
-  @Post('/api/v1/CreateGmailTrait')
-  CreateGmailTrait(@Body(ValidationPipe) GmailTraitDetails: GmailTrait) {
-    return this.appService.SpreadSheetTrait(GmailTraitDetails.trait, GmailTraitDetails.email)
+  @Post('/api/v1/CreateSpreadSheetTrait')
+  CreateSpreadSheetTrait(@Body(ValidationPipe) SpreadSheetTraitDetails: SpreadSheetTrait) {
+    return this.appService.CreateSpreadSheetTrait(SpreadSheetTraitDetails.traitname, SpreadSheetTraitDetails.spreadSheetId, SpreadSheetTraitDetails.spreadsheetName, SpreadSheetTraitDetails.email)
   }
+
   @Get('/api/v1/getUserDetails')
   getUserDetails(@Req() request: request) {
     const EmailId = request.query.email

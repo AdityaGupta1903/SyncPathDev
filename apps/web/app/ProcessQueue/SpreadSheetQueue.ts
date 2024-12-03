@@ -10,12 +10,11 @@ const worker = new Worker(
   async (job) => {
     try {
       const data = job.data;
-      const { MessageId, SendersEmail, UserEmail, Trait, CLIENT_ID, CLIENT_SECRET } = job.data
+      const { MessageId, SendersEmail, UserEmail, Trait, SpreadSheetId, CLIENT_ID, CLIENT_SECRET } = job.data
 
       console.log("JobData", data);
       const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET);
       let emailId = UserEmail;
-      let SpreadSheetId = "1O4HHQgougGnzcG_haYcqoQHqUNl1ee4e6GA5RObmVQQ"
       let User = await prisma.user.findUnique({
         where: {
           email: emailId

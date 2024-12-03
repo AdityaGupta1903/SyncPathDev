@@ -9,7 +9,7 @@ export class AppController {
 
   @Post(":userId/:zapId")
   RunZap(@Body(ValidationPipe) RunZapData,@Param('userId') userId:string,@Param('zapId') zapId:string) {
-    console.log(RunZapData);
+    // console.log(RunZapData);
     return this.appService.RunZap(RunZapData,userId,zapId);
   }
 }

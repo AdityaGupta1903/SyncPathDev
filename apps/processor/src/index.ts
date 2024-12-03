@@ -5,13 +5,13 @@ const AddToQueue = async()=>{
   try{
     const producer = kafka.producer()
     producer.connect().then((resp)=>{
-       console.log("Producer Connected to kafka");
+      //  console.log("Producer Connected to kafka");
       setTimeout(()=>{
        prisma.$transaction(async tx=>{
            const Zaps = tx.zapRunOutBox.findMany(); 
            
            (await Zaps).map(async zap=>{
-            console.log(zap)
+            // console.log(zap)
                await producer.send({
                    topic: 'ProcessQueue',
                    messages: [

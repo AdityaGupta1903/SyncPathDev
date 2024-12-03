@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
   const {data,status} = useSession();
-  console.log(data);
   if(status =='authenticated'){
     const email = data.user?.email
     router.push(`/workflows?id=${email}`)

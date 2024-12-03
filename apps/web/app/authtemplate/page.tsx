@@ -11,8 +11,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Button,
 } from "@mui/material";
-import { getUserDetails } from "../api/function";
+import { CreateSpreadSheetTrait, getUserDetails } from "../api/function";
 import { useSession } from "next-auth/react";
 import DoneIcon from "@mui/icons-material/Done";
 import { getSpreadSheets } from "../api/function";
@@ -27,6 +28,8 @@ export default function () {
   >([]);
   const [traitname, setTraitName] = useState<string>();
   const [selectedSpreadSheetId, setSelectedSpreadSheetId] = useState<string>();
+  const [selectedSpreadSheetName, setSelectedSpreadSheetName] =
+    useState<string>();
   const { data, status } = useSession();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -73,7 +76,7 @@ export default function () {
     processSpreadSheetDetails();
   }, [data]);
 
-  console.log(spreadSheetData);
+  // console.log(selectedSpreadSheetId);
   return (
     <>
       <div className="flex min-h-screen justify-center w-full items-center">
@@ -93,9 +96,7 @@ export default function () {
             ) : (
               <Card
                 onClick={() => {
-                  window.open(
-                    "http://localhost:3000/api/spreadsheet/Login/login"
-                  );
+                  window.open("http://localhost:3000/api/gmail/Login/login");
                 }}
                 className="w-[30%] m-2 hover:cursor-pointer"
               >
@@ -115,21 +116,42 @@ export default function () {
           </div>
 
           <div className="w-full h-full flex justify-center">
-            <Card
-              onClick={() => {
-                setIsdrawerOpen((prev) => !prev);
-              }}
-              className="w-[30%] p-3 m-2 hover:cursor-pointer"
-            >
-              <img
-                className="h-[40px] object-contain"
-                src="https://cdn.pixabay.com/photo/2017/03/08/21/21/spreadsheet-2127832_640.png"
-              ></img>
-              <div className="flex justify-center">
-                {" "}
-                Connect Your SpreadSheet
-              </div>
-            </Card>
+            {!isSpreadSheetConnected ? (
+              <Card
+                onClick={() => {
+                  window.open(
+                    "http://localhost:3000/api/spreadsheet/Login/login"
+                  );
+                }}
+                className="w-[30%] p-3 m-2 hover:cursor-pointer"
+              >
+                <img
+                  className="h-[40px] object-contain"
+                  src="https://cdn.pixabay.com/photo/2017/03/08/21/21/spreadsheet-2127832_640.png"
+                ></img>
+                <div className="flex justify-center">
+                  {" "}
+                  Connect Your SpreadSheet
+                </div>
+              </Card>
+            ) : (
+              <Card
+                onClick={() => {
+                  setIsdrawerOpen((prev) => !prev);
+                }}
+                className="w-[30%] p-3 m-2 hover:cursor-pointer"
+              >
+                <img
+                  className="h-[40px] object-contain"
+                  src="https://cdn.pixabay.com/photo/2017/03/08/21/21/spreadsheet-2127832_640.png"
+                ></img>
+                <div className="flex justify-center">
+                  {" "}
+                  Connect Your SpreadSheet
+                </div>
+              </Card>
+            )}
+
             {isSpreadSheetConnected ? (
               <DoneIcon color="success" />
             ) : (
@@ -177,7 +199,7 @@ export default function () {
               >
                 {spreadSheetData.map((ele) => {
                   return (
-                    <MenuItem key={ele.id} value={ele.title}>
+                    <MenuItem key={ele.id} value={ele.id}>
                       {ele.title}
                     </MenuItem>
                   );
@@ -204,6 +226,29 @@ export default function () {
               />
             </FormControl>
           </Box>
+          <Button
+            variant="contained"
+            className="w-full mt-5"
+            sx={{
+              backgroundColor: "#4CAF50",
+              padding: "10px 20px",
+              fontSize: "16px",
+              "&:hover": {
+                backgroundColor: "#45a049",
+              },
+            }}
+            disabled={!(traitname && selectedSpreadSheetId)}
+            onClick={async () => {
+              CreateSpreadSheetTrait(
+                traitname ?? "",
+                selectedSpreadSheetId ?? "",
+                "TestSpreadSheet",
+                data?.user?.email ?? ""
+              );
+            }}
+          >
+            Submit
+          </Button>
         </div>
       </Drawer>
     </>

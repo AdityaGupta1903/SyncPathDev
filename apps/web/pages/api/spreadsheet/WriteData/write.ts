@@ -5,14 +5,14 @@ import { SpreadSheetQueue } from "../../../../app/ProcessQueue/Attachment";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { SendersEmail, MessageId, UserEmail, Trait, CLIENT_ID, CLIENT_SECRET } = req.body
+        const { SendersEmail, MessageId, UserEmail, Trait, SpreadSheetId, CLIENT_ID, CLIENT_SECRET } = req.body
 
         const promise = new Promise((resolve, reject) => {
             try {
                 let AddRecordToSpredSheet = async () => {
                     try {
 
-                        const response = await SpreadSheetQueue.add(MessageId, { MessageId, SendersEmail, UserEmail, Trait, CLIENT_ID, CLIENT_SECRET });
+                        const response = await SpreadSheetQueue.add(MessageId, { MessageId, SendersEmail, UserEmail, Trait, SpreadSheetId, CLIENT_ID, CLIENT_SECRET });
                         if (response) {
                             console.log("Details have been pushed to SpreadsheetQueue");
                         }

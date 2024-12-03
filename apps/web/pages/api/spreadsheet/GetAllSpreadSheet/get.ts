@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         let emailId = req.body.emailId;
-        console.log(emailId);
+        // console.log(emailId);
         const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
         let User = await prisma.user.findUnique({
             where: {
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             let spread_sheet_files = await drive.files.list({
                 q: "mimeType='application/vnd.google-apps.spreadsheet'"
             });
-            console.log(spread_sheet_files.data.items);
+            // console.log(spread_sheet_files.data.items);
             res.send({ spread_sheet_data: spread_sheet_files.data.items });
         }
         else {

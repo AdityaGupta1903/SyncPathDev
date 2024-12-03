@@ -8,6 +8,7 @@ import { TriggerDetails } from './dto/TriggerDetails.dto';
 import { AvailableTriggerDetails } from './dto/AvailableTriggerDetails';
 import { ActionDetails } from './dto/ActionDetails.dto';
 import { CreateAvailableAction } from './dto/CreateAvailableAction.dto';
+
 @Injectable()
 export class AppService {
 
@@ -186,6 +187,48 @@ export class AppService {
         }
       })
       return user;
+    }
+    catch (err) {
+      return new BadRequestException(err);
+    }
+  }
+  async CreateSpreadSheetTrait(traitname: string, spreadSheetId: string, spreadsheetName: string, email: string) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: email
+        }
+      })
+      if (user) {
+        let traitArray = await prisma.gmailTraits.findMany({
+          where: {
+            UserId: user.UserId
+          }
+        })
+        traitArray.map((trait) => {
+          if (trait.Traitname === traitname) {
+            return new BadRequestException("Trait already Exists");
+          }
+        })
+        // console.log(traitname + " " + spreadSheetId + " " + spreadsheetName + " " + email)
+        let PushtoSpreadSheet = await prisma.gmailTraits.create({
+          data: {
+            Traitname: traitname,
+            SpreadSheetName: spreadsheetName,
+            SpreadSheetId: spreadSheetId,
+            UserId: user.UserId
+          }
+        })
+        if (PushtoSpreadSheet) {
+          return { message: "Configurations Saved Successfully" };
+        }
+        else {
+          return new BadRequestException("Some Error has Occured");
+        }
+      }
+      else {
+        return new BadRequestException("User Not Found");
+      }
     }
     catch (err) {
       return new BadRequestException(err);

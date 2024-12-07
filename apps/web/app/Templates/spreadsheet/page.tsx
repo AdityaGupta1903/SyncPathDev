@@ -13,10 +13,10 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { CreateSpreadSheetTrait, getUserDetails } from "../api/function";
+import { CreateSpreadSheetTrait, getUserDetails } from "../../api/function";
 import { useSession } from "next-auth/react";
 import DoneIcon from "@mui/icons-material/Done";
-import { getSpreadSheets } from "../api/function";
+import { getSpreadSheets } from "../../api/function";
 
 export default function () {
   const [isGmailConnected, setIsGmailConnected] = useState<boolean>(false);

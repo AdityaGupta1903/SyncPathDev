@@ -68,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                        ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     }).catch(() => {
                         res.setHeader(
                             "Set-Cookie",
@@ -78,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                        ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     })
 
                 }
@@ -91,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             secure: true,
                             httpOnly: true
                         })
-                    ).redirect(`http://localhost:3000/authtemplate?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                    ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                 }
 
             }

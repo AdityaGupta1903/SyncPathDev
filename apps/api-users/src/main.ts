@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(cookieParser());
   
   await app.listen(3002, () => {
-    console.log("Backend Connected")
+    // console.log("Backend Connected")
   });
 }
 bootstrap();

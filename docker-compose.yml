@@ -6,6 +6,12 @@ services:
     ports:
       - "2181:2181"
     restart: always
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
   kafka:
     image: wurstmeister/kafka:latest
     ports:

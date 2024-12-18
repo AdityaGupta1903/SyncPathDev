@@ -14,10 +14,30 @@ datasource db {
 }
 
 model User {
-  UserId   String @id @default(uuid())
-  email    String @unique
-  Password String
-  Zaps     Zap[]
+  UserId                  String        @id @default(uuid())
+  email                   String        @unique
+  Password                String
+  Zaps                    Zap[]
+  GmailTraits             GmailTraits[]
+  GmailAccessToken        String?
+  GmailRefreshToken       String?
+  DriveAccessToken        String?
+  DriveRefreshToken       String?
+  SpreadSheetAccessToken  String?
+  SpreadSheetRefreshToken String?
+  isGmailConnected        Boolean?      @default(false)
+  isDriveConnected        Boolean?      @default(false)
+  isSpreadSheetConnected  Boolean?      @default(false)
+  MsgAcknowledged         String[]
+}
+
+model GmailTraits {
+  TraitId         String  @id @default(uuid())
+  Traitname       String
+  UserId          String 
+  User            User    @relation(fields: [UserId], references: [UserId])
+  SpreadSheetName String?
+  SpreadSheetId   String?
 }
 
 model Zap {

@@ -14,10 +14,12 @@ import { useRouter } from "next/navigation";
 import Card from "@mui/material/Card";
 
 export default function Workflows() {
-  let id = window.location.href.split("?")[1]?.split("=")[1];
-  if (typeof id !== "string") {
-    id = "";
-  }
+  let [id, setId] = useState<string>("");
+  
+  useEffect(() => {
+    setId(window.location.href.split("?")[1]?.split("=")[1] ?? "");
+  }, []);
+
   const router = useRouter();
   // console.log(id)
   const session = useSession();

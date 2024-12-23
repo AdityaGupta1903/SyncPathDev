@@ -6,10 +6,12 @@
     "build": "next build",
     "start": " concurrently \"next dev --turbo\" \"npm run Attachment:Queue\" \"npm run Attachment:Worker\" \"npm run SpreadSheetWorker\"",
     "dev": "next dev --turbo",
-    "Attachment:Queue": "tsx  app/ProcessQueue/Attachment",
-    "Attachment:Worker": "tsx app/ProcessQueue/AttachmentWorker",
-    "SpreadSheetWorker": "tsx app/ProcessQueue/SpreadSheetQueue",
-    "lint": "next lint"
+    "Attachment:Queue": "tsx  app/ProcessQueue/Attachment.ts",
+    "Attachment:Worker": "tsx  app/ProcessQueue/Attachmentworker.ts",
+    "SpreadSheetWorker": "tsx  app/ProcessQueue/SpreadSheetQueue.ts",
+    "lint": "next lint",
+    "start:prod": "next start"
+
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -25,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.6",
     "next-auth": "^4.24.8",
+    "pm2": "^5.4.3",
     "react": "18.3.1",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.3.1",

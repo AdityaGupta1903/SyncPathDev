@@ -5,6 +5,7 @@ import { google } from 'googleapis';
 
 const connection = new Redis({ maxRetriesPerRequest: null });  /// Some Error Must be there that's why it is Using maxRetriesPerRequest
 
+
 const worker = new Worker(
   'SpreadSheetSpecialTraitQueue', // Queue Name
   async (job) => {

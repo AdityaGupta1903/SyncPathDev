@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "start": "next dev --turbo",
-    "Attachment:Queue": "tsx --watch app/ProcessQueue/Attachment.ts",
-    "Attachment:Worker": "tsx  app/ProcessQueue/Attachmentworker.ts",
-    "SpreadSheetWorker": "tsx  app/ProcessQueue/SpreadSheetQueue.ts",
+    "start": " concurrently \"next dev --turbo\" \"npm run Attachment:Queue\" \"npm run Attachment:Worker\" \"npm run SpreadSheetWorker\"",
+    "dev": "next dev --turbo",
+    "Attachment:Queue": "tsx  app/ProcessQueue/Attachment",
+    "Attachment:Worker": "tsx app/ProcessQueue/AttachmentWorker",
+    "SpreadSheetWorker": "tsx app/ProcessQueue/SpreadSheetQueue",
     "lint": "next lint"
   },
   "dependencies": {

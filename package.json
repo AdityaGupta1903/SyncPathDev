@@ -3,12 +3,15 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "concurrently \"npm run api-dev\" \"npm run client-dev\"",
+    "api-dev": "turbo dev",
+    "client-dev": "cd apps/web && npm run start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@types/cookie": "^1.0.0",
+    "concurrently": "^9.1.0",
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"
@@ -29,7 +32,7 @@
     "googleapis": "^144.0.0",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
-    "pm2": "^5.4.2",
+    "pm2": "^5.4.3",
     "yarn": "^1.22.22"
   }
 }

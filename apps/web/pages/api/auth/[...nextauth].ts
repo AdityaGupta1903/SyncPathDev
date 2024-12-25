@@ -34,6 +34,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
       authorization: {
         params: {
+          redirect_uri: "https://syncpath.adityagupta.site/api/auth/callback/google",
           access_type: 'offline', // for refresh tokens
           prompt: 'consent' // to force user re-consent
         }

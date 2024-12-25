@@ -6,7 +6,7 @@ import { google } from "googleapis"
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/spreadsheet/AuthCode/auth"; /// Useless in this file
+const REDIRECT_URI = "https://syncpath.adityagupta.site/api/spreadsheet/AuthCode/auth"; /// Useless in this file
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     try {

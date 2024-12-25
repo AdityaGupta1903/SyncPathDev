@@ -10,7 +10,7 @@ type ResponseData = {
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/gmail/AuthCode/auth";
+const REDIRECT_URI = "https://syncpath.adityagupta.site/api/gmail/AuthCode/auth";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   /// We have to set Tokens in this function
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             if (part.body?.attachmentId) {
               gmail.users.messages.attachments.get({ userId: "me", messageId: msgId, id: part.body.attachmentId }).then((res) => {
 
-                axios.post("http://localhost:3000/api/drive/CreateAttachment/createattachment", {
+                axios.post("https://syncpath.adityagupta.site/api/drive/CreateAttachment/createattachment", {
                   AttachmentData: res.data.data,
                   emailAddress: User.email,
                   SendersEmail: SendersEmail,
@@ -92,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 console.log(trait)
                 let traitName = trait.Traitname;
                 if (Data.toLowerCase().search(traitName.toLowerCase()) !== -1) {
-                  axios.post("http://localhost:3000/api/spreadsheet/WriteData/write", {
+                  axios.post("https://syncpath.adityagupta.site/api/spreadsheet/WriteData/write", {
                     SendersEmail: SendersEmail,
                     MessageId: msgId,
                     UserEmail: User.email,

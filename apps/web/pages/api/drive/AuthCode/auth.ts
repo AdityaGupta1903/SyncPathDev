@@ -8,7 +8,7 @@ type ResponseData = {
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/drive/AuthCode/auth";
+const REDIRECT_URI = "https://syncpath.adityagupta.site/api/drive/AuthCode/auth";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     /// We have to set Tokens in this function
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     secure: true,
                     httpOnly: true
                 })
-            ).redirect(`http://localhost:3000/Templates/attachment`);
+            ).redirect(`https://syncpath.adityagupta.site/Templates/attachment`);
 
             /// Update that drive is connected
             if (currentProfileEmailAddress) {

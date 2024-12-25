@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
         const oauth2Client = new google.auth.OAuth2(
             process.env.GOOGLE_CLIENT_ID,
             process.env.GOOGLE_CLIENT_SECRET,
-            "http://localhost:3000/api/spreadsheet/AuthCode/auth"  /// useless in this file 
+            "https://syncpath.adityagupta.site/api/spreadsheet/AuthCode/auth"  /// useless in this file 
         );
 
         const scopes = [
@@ -27,7 +27,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
 
         });
         // console.log(url);
-         res.redirect(url);
+        res.redirect(url);
     } catch (err) {
         console.log(err);
     }

@@ -80,7 +80,7 @@ export async function getUserDetails(Email: string) {
 }
 export async function getSpreadSheets(email: string) {
   try {
-    const res = await axios.post('http://localhost:3000/api/spreadsheet/GetAllSpreadSheet/get', {
+    const res = await axios.post('https://syncpath.adityagupta.site/api/spreadsheet/GetAllSpreadSheet/get', {
       emailId: email
     });
     // console.log(res.data)

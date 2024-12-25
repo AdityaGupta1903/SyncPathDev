@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Respon
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      "http://localhost:3000/api/gmail/AuthCode/auth"
+      "https://syncpath.adityagupta.site/api/gmail/AuthCode/auth"
     );
 
     const scopes = [

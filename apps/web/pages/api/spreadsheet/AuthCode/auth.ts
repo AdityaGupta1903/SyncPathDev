@@ -10,7 +10,7 @@ type ResponseData = {
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/spreadsheet/AuthCode/auth"; /// Useless in this file
+const REDIRECT_URI = "https://syncpath.adityagupta.site/api/spreadsheet/AuthCode/auth"; /// Useless in this file
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
     /// We have to set Tokens in this function
@@ -68,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                        ).redirect(`https://syncpath.adityagupta.site/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     }).catch(() => {
                         res.setHeader(
                             "Set-Cookie",
@@ -78,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                                 secure: true,
                                 httpOnly: true
                             })
-                        ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                        ).redirect(`https://syncpath.adityagupta.site/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                     })
 
                 }
@@ -91,7 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             secure: true,
                             httpOnly: true
                         })
-                    ).redirect(`http://localhost:3000/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
+                    ).redirect(`https://syncpath.adityagupta.site/Templates/spreadsheet?type=spreadsheet&id=${Jwt.sign(currentProfileEmailAddress, "S3CRET")}`);
                 }
 
             }

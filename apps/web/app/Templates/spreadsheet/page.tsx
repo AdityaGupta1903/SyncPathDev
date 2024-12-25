@@ -96,7 +96,9 @@ export default function () {
             ) : (
               <Card
                 onClick={() => {
-                  window.open("http://localhost:3000/api/gmail/Login/login");
+                  window.open(
+                    "https://syncpath.adityagupta.site/api/gmail/Login/login"
+                  );
                 }}
                 className="w-[30%] m-2 hover:cursor-pointer"
               >
@@ -120,7 +122,7 @@ export default function () {
               <Card
                 onClick={() => {
                   window.open(
-                    "http://localhost:3000/api/spreadsheet/Login/login"
+                    "https://syncpath.adityagupta.site/api/spreadsheet/Login/login"
                   );
                 }}
                 className="w-[30%] p-3 m-2 hover:cursor-pointer"

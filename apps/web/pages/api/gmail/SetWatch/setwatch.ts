@@ -9,7 +9,7 @@ type ResponseData = {
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = "http://localhost:3000/api/gmail/AuthCode/auth";
+const REDIRECT_URI = "https://syncpath.adityagupta.site/api/gmail/AuthCode/auth";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
   /// We have to set Watch in this Handler
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
     oauth2Client.setCredentials({ access_token: accessToken });
     let gmail = google.gmail({ version: "v1", auth: oauth2Client });
-    
+
 
     const currentProfileEmailAddress = (await gmail.users.getProfile({ userId: "me" })).data.emailAddress;
     if (currentProfileEmailAddress) {

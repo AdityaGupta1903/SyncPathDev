@@ -11,7 +11,7 @@ module.exports = {
       name: "nest-app",
       script: "npm",
       args: "run start",
-      cwd: "./apps/start:prod",
+      cwd: "./apps/api-users",
       watch: true,
     },
   ],

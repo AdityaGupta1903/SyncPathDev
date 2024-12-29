@@ -6,7 +6,7 @@ import { SpreadSheet, SpreadSheetDetails } from "../models/SpreadSheetDetails";
 /// Added Comment to Test WebHook
 export async function Authenticate(UserName: string, Password: string, AuthType: string) {
   try {
-    const res = await axios.post(`http://localhost:3002/api/v1/${AuthType}`, {
+    const res = await axios.post(`http://synchook.adityagupta.site/api/v1/${AuthType}`, {
       UserName: UserName,
       Password: Password,
     });
@@ -17,7 +17,7 @@ export async function Authenticate(UserName: string, Password: string, AuthType:
 }
 export async function getAvailabletriggers() {
   try {
-    const res = await axios.get("http://localhost:3002/api/v1/GetAvailableTriggers", {
+    const res = await axios.get("http://synchook.adityagupta.site/api/v1/GetAvailableTriggers", {
       withCredentials: true,
     });
 
@@ -28,7 +28,7 @@ export async function getAvailabletriggers() {
 }
 export async function CreatenewZap(email: string, ZapName: string) {
   try {
-    const res = await axios.post("http://localhost:3002/api/v1/CreateZap", {
+    const res = await axios.post("http://synchook.adityagupta.site/api/v1/CreateZap", {
       email: email,
       ZapName: ZapName,
     });
@@ -39,7 +39,7 @@ export async function CreatenewZap(email: string, ZapName: string) {
 }
 export async function CreatenewTrigger(ZapId: string, AvailableTriggerId: string) {
   try {
-    const res = await axios.post("http://localhost:3002/api/v1/CreateTrigger", {
+    const res = await axios.post("http://synchook.adityagupta.site/api/v1/CreateTrigger", {
       ZapId: ZapId,
       AvailableTriggerId: AvailableTriggerId,
     });
@@ -51,7 +51,7 @@ export async function CreatenewTrigger(ZapId: string, AvailableTriggerId: string
 export async function getZaps(email: string) {
   try {
     // console.log(email);
-    const res = await axios.get("http://localhost:3002/api/v1/GetUserZap", {
+    const res = await axios.get("http://synchook.adityagupta.site/api/v1/GetUserZap", {
       params: {
         email: email,
       },
@@ -65,43 +65,38 @@ export async function getZaps(email: string) {
 }
 export async function getUserDetails(Email: string) {
   try {
-
-    const res = await axios.get("http://localhost:3002/api/v1/getUserDetails", {
+    const res = await axios.get("http://synchook.adityagupta.site/api/v1/getUserDetails", {
       params: {
-        email: Email
-      }
-    })
+        email: Email,
+      },
+    });
 
-    return res.data as UserDetails
-  }
-  catch (err) {
+    return res.data as UserDetails;
+  } catch (err) {
     console.log(err);
   }
 }
 export async function getSpreadSheets(email: string) {
   try {
-    const res = await axios.post('https://syncpath.adityagupta.site/api/spreadsheet/GetAllSpreadSheet/get', {
-      emailId: email
+    const res = await axios.post("https://syncpath.adityagupta.site/api/spreadsheet/GetAllSpreadSheet/get", {
+      emailId: email,
     });
     // console.log(res.data)
-    return res.data as SpreadSheet
-  }
-  catch (err) {
+    return res.data as SpreadSheet;
+  } catch (err) {
     console.log(err);
   }
 }
 export async function CreateSpreadSheetTrait(traitname: string, spreadSheetId: string, spreadsheetName: string, email: string) {
   try {
-    const res = await axios.post("http://localhost:3002/api/v1/CreateSpreadSheetTrait", {
+    const res = await axios.post("http://synchook.adityagupta.site/api/v1/CreateSpreadSheetTrait", {
       traitname: traitname.trim(),
       spreadSheetId: spreadSheetId,
       spreadsheetName: spreadsheetName,
-      email: email
-    })
-    return res.data
-  }
-  catch (err) {
+      email: email,
+    });
+    return res.data;
+  } catch (err) {
     console.log(err);
   }
 }
-
